@@ -12,8 +12,11 @@
   "dependencies": {
     "@fortawesome/free-solid-svg-icons": "^7.0.1",
     "@fortawesome/react-fontawesome": "^3.0.2",
+    "@supabase/supabase-js": "^2.57.0",
+    "axios": "^1.11.0",
     "prop-types": "^15.8.1",
     "react": "^19.1.1",
+    "react-confetti": "^6.4.0",
     "react-dom": "^19.1.1",
     "react-router": "^7.8.2",
     "zustand": "^5.0.8"

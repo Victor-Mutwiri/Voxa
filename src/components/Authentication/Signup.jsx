@@ -1,9 +1,169 @@
+import { useState } from "react";
+// import { supabase } from "../../lib/supabase"; // Uncomment when you have Supabase configured
+
 const Signup = () => {
+    const [formData, setFormData] = useState({
+        fullName: "",
+        email: "",
+        password: "",
+        confirmPassword: ""
+    });
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
+
+    const handleChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        });
+        // Clear error when user starts typing
+        if (error) setError("");
+    };
+
+    const validateForm = () => {
+        if (formData.password !== formData.confirmPassword) {
+            setError("Passwords do not match");
+            return false;
+        }
+        if (formData.password.length < 6) {
+            setError("Password must be at least 6 characters long");
+            return false;
+        }
+        return true;
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        
+        if (!validateForm()) {
+            return;
+        }
+
+        setLoading(true);
+        setError("");
+
+        try {
+            // Supabase signup logic
+            /* 
+            const { data, error } = await supabase.auth.signUp({
+                email: formData.email,
+                password: formData.password,
+                options: {
+                    data: {
+                        full_name: formData.fullName,
+                    }
+                }
+            });
+
+            if (error) {
+                setError(error.message);
+            } else {
+                // Handle successful signup
+                console.log("Signup successful:", data);
+                // You might want to show a message about email confirmation
+                alert("Please check your email to confirm your account");
+            }
+            */
+
+            // Temporary demo logic - remove when implementing Supabase
+            console.log("Signup attempt:", formData);
+            await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
+            alert("Signup form submitted! Check console for data.");
+            
+        } catch (err) {
+            setError("An unexpected error occurred");
+            console.error("Signup error:", err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
-        <div>
-            <h1>Signup component</h1>
-            <p>This is where users can sign up for an account.</p>
-        </div>
+        <form onSubmit={handleSubmit} className="auth-form">
+            {error && <div className="error-message">{error}</div>}
+            
+            <div className="form-group">
+                <label htmlFor="signup-fullname" className="form-label">
+                    Full Name
+                </label>
+                <input
+                    type="text"
+                    id="signup-fullname"
+                    name="fullName"
+                    className="form-input"
+                    value={formData.fullName}
+                    onChange={handleChange}
+                    required
+                    placeholder="Enter your full name"
+                />
+            </div>
+
+            <div className="form-group">
+                <label htmlFor="signup-email" className="form-label">
+                    Email Address
+                </label>
+                <input
+                    type="email"
+                    id="signup-email"
+                    name="email"
+                    className="form-input"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    placeholder="Enter your email"
+                />
+            </div>
+
+            <div className="form-group">
+                <label htmlFor="signup-password" className="form-label">
+                    Password
+                </label>
+                <input
+                    type="password"
+                    id="signup-password"
+                    name="password"
+                    className="form-input"
+                    value={formData.password}
+                    onChange={handleChange}
+                    required
+                    placeholder="Enter your password"
+                />
+            </div>
+
+            <div className="form-group">
+                <label htmlFor="signup-confirm-password" className="form-label">
+                    Confirm Password
+                </label>
+                <input
+                    type="password"
+                    id="signup-confirm-password"
+                    name="confirmPassword"
+                    className="form-input"
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
+                    required
+                    placeholder="Confirm your password"
+                />
+            </div>
+
+            <div className="form-options">
+                <label className="checkbox-container">
+                    <input type="checkbox" required />
+                    <span className="checkbox-text">
+                        I agree to the Terms of Service and Privacy Policy
+                    </span>
+                </label>
+            </div>
+
+            <button 
+                type="submit" 
+                className="submit-button"
+                disabled={loading}
+            >
+                {loading ? "Creating account..." : "Create Account"}
+            </button>
+        </form>
     );
-}
+};
+
 export default Signup;
