@@ -15,6 +15,7 @@ const Auth = () => {
             <div className="auth-card">
                 <div className="auth-header">
                     <h1 className="auth-title">Welcome</h1>
+                    <h5>Logo</h5>
                     <p className="auth-subtitle">
                         {activeTab === "login" 
                             ? "Sign in to your account" 

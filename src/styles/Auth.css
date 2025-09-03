@@ -24,11 +24,11 @@
 /* Header */
 .auth-header {
     text-align: center;
-    margin-bottom: 32px;
+    margin-bottom: 26px;
 }
 
 .auth-title {
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: 700;
     color: #1a202c;
     margin: 0 0 8px 0;
