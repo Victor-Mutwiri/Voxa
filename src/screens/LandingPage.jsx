@@ -1,11 +1,18 @@
 import Navbar from "../components/Navbar/Navbar";
+import '../styles/landingpage.css'
 
 const LandingPage = () => {
     return (
-        <div>
+        <div className="landing-page">
             <Navbar />
-            <h1>Welcome to the Landing Page</h1>
-            <p>This is the landing page of the application.</p>
+            <div className="landing-container">
+                <section>
+                    <h1>Welcome to the Landing Page</h1>
+                </section>
+                <section>
+                    <p>This is the landing page of the application.</p>
+                </section>
+            </div>
         </div>
     );
 }
