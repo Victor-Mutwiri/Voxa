@@ -3,18 +3,23 @@
   /* background: #18181b; */
   display: flex;
   font-family: 'Inter', sans-serif;
+  background-color: #F5F7FA;
 }
 
 .nav-panel {
   width: 256px;
   /* background: #27272a; */
-  border-right: 1px solid #3f3f46;
+  /* border-right: 1px solid #3f3f46; */
+  /* background-color: #fff; */
   display: flex;
   flex-direction: column;
 }
 
 .nav-header {
   padding: 24px;
+  background-color: #fff;
+  border-radius: 16px 16px 0 0;
+  margin: 15px;
   /* border-bottom: 1px solid #3f3f46; */
 }
 
@@ -57,6 +62,9 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+  background-color: #fff;
+  border-radius: 0 0 16px 16px;
+  margin: 15px;
 }
 
 .nav-btn {

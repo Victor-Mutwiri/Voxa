@@ -24,19 +24,22 @@ const Home = () => {
     };
 
     const navigationItems = [
-        { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+        { id: 'overview', label: 'Overview', icon: LayoutDashboard },
         { id: 'leads', label: 'Leads', icon: BookText },
         { id: 'templates', label: 'Templates', icon: Users },
+        { id: 'integrations', label: 'Integrations', icon: Users },
         { id: 'settings', label: 'Settings', icon: Settings },
     ];
 
     const renderContent = () => {
         switch (activeTab) {
-        case 'dashboard':
+        case 'overview':
             return <Dashboard />;
         case 'leads':
             return <Settingz />;
         case 'templates':
+            return <Templates />;
+        case 'integrations':
             return <Templates />;
         case 'settings':
             return <Settingz />;
@@ -59,8 +62,6 @@ const Home = () => {
                             <span className="nav-title"> <a href="/">Voxa</a></span>
                         </div>
                     </div>
-
-                    {/* Navigation Items */}
                     <nav className="nav-items">
                         {navigationItems.filter(item => item.id !== 'settings').map((item) => {
                             const Icon = item.icon;
