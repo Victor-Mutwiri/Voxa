@@ -2,6 +2,8 @@ import {useState} from 'react';
 import { useNavigate } from 'react-router';
 import Dashboard from '../components/Dashboard';
 import Templates from '../components/Templates';
+import Leads from '../components/Leads';
+import Integrations from '../components/Integrations';
 import Settingz from '../components/Settingz';
 import LogoutModal from '../components/Authentication/LogoutModal';
 import { 
@@ -38,11 +40,11 @@ const Home = () => {
         case 'overview':
             return <Dashboard />;
         case 'leads':
-            return <Settingz />;
+            return <Leads />;
         case 'templates':
             return <Templates />;
         case 'integrations':
-            return <Templates />;
+            return <Integrations />;
         case 'settings':
             return <Settingz />;
         default:
