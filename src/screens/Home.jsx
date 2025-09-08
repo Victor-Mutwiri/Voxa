@@ -18,6 +18,8 @@ import '../styles/Home.css'
 const Home = () => {
     const [activeTab, setActiveTab] = useState('dashboard');
     const navigate = useNavigate();
+    const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
     const handleUserIconClick = () => {
         setActiveTab('settings');
@@ -48,6 +50,25 @@ const Home = () => {
         }
     };
 
+    const handleSignOut = () => {
+    setShowLogoutModal(true);
+  };
+  const handleLogoutConfirm = async () => {
+    try{
+      await supabase.auth.signOut();
+      resetStore(); // Reset the store if you're using Zustand or similar
+      localStorage.clear();
+      setShowLogoutModal(false);
+      navigate('/', {replace:true});
+    } catch (error) {
+      console.error('Logout failed:', error);
+    };
+  };
+
+
+  const handleLogoutCancel = () => {
+    setShowLogoutModal(false);
+  };
     return (
         <div className="home-root">
             <div className="nav-panel">
@@ -81,13 +102,18 @@ const Home = () => {
                 {/* Sign Out Button */}
                 <div className="nav-signout">
                     <button
+                        onClick={handleSignOut}
                         className="signout-btn"
                     >
                         <LogOut className="signout-icon" />
                         <span className="signout-label">Sign Out</span>
                     </button>
                 </div>
-                <LogoutModal/>
+                <LogoutModal
+                    open={showLogoutModal}
+                    onClose={handleLogoutCancel}
+                    onConfirm={handleLogoutConfirm}
+                />
             </div>
             {/* Right Content Area */}
             <div className="content-area">

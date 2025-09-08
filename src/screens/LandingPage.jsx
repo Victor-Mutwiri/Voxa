@@ -17,11 +17,12 @@ const LandingPage = () => {
                             Business
                         </h1>
                         <p className="hero-subtitle">
-                            Voxa helps small to medium sized businesses discover qualified leads and automate outreach to fill your pipeline with opportunities.
+                            Voxa helps small to medium sized businesses discover qualified leads and automate outreach to fill your pipeline with opportunities
                         </p>
                         <div className="hero-buttons">
                             <button className="btn-primary">Get Started Today</button>
-                            <button className="btn-secondary">See Voxa in Action</button>
+                            {/* <button className="btn-secondary">See Voxa in Action</button> */}
+                            <button className="btn-secondary">Watch Demo Video</button>
                         </div>
                     </div>
                     <div className="hero-visual">
