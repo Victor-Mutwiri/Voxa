@@ -1,5 +1,6 @@
 import {useState} from 'react';
 import { useNavigate } from 'react-router';
+import { supabase } from '../supabaseClient';
 import Dashboard from '../components/Dashboard';
 import Templates from '../components/Templates';
 import Leads from '../components/Leads';

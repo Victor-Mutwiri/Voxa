@@ -1,7 +1,10 @@
 import { useState } from "react";
-// import { supabase } from "../../lib/supabase"; // Uncomment when you have Supabase configured
+import { useNavigate } from "react-router";
+import { supabase } from "../../supabaseClient";
+
 
 const Signup = () => {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         fullName: "",
         email: "",
@@ -35,16 +38,12 @@ const Signup = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         
-        if (!validateForm()) {
-            return;
-        }
+        if (!validateForm()) return;
 
         setLoading(true);
         setError("");
 
         try {
-            // Supabase signup logic
-            /* 
             const { data, error } = await supabase.auth.signUp({
                 email: formData.email,
                 password: formData.password,
@@ -58,18 +57,13 @@ const Signup = () => {
             if (error) {
                 setError(error.message);
             } else {
-                // Handle successful signup
-                console.log("Signup successful:", data);
-                // You might want to show a message about email confirmation
-                alert("Please check your email to confirm your account");
+                // Store signup data for onboarding
+                localStorage.setItem('signupToken', 'true');
+                localStorage.setItem('pendingEmail', formData.email);
+                
+                // Navigate to onboarding
+                navigate('/onboarding');
             }
-            */
-
-            // Temporary demo logic - remove when implementing Supabase
-            console.log("Signup attempt:", formData);
-            await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
-            alert("Signup form submitted! Check console for data.");
-            
         } catch (err) {
             setError("An unexpected error occurred");
             console.error("Signup error:", err);

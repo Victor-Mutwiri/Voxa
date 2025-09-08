@@ -1,7 +1,9 @@
 import { useState } from "react";
-// import { supabase } from "../../lib/supabase"; // Uncomment when you have Supabase configured
+import { useNavigate } from "react-router";
+import { supabase } from "../../supabaseClient";
 
 const Login = () => {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         email: "",
         password: ""
@@ -24,8 +26,6 @@ const Login = () => {
         setError("");
 
         try {
-            // Supabase login logic
-            /* 
             const { data, error } = await supabase.auth.signInWithPassword({
                 email: formData.email,
                 password: formData.password,
@@ -34,17 +34,10 @@ const Login = () => {
             if (error) {
                 setError(error.message);
             } else {
-                // Handle successful login
-                console.log("Login successful:", data);
-                // Redirect or update app state
+                // Store user session
+                localStorage.setItem('user', JSON.stringify(data.user));
+                navigate('/home');
             }
-            */
-
-            // Temporary demo logic - remove when implementing Supabase
-            console.log("Login attempt:", formData);
-            await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
-            alert("Login form submitted! Check console for data.");
-            
         } catch (err) {
             setError("An unexpected error occurred");
             console.error("Login error:", err);
