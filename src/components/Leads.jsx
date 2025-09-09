@@ -1,38 +1,35 @@
-import { useState, useEffect } from 'react';
-import { supabase } from '../supabaseClient';
+import { useEffect, useState } from 'react';
+import useStore from '../useStore';
+import Modal from '../components/Modal';
+import LeadSearchForm from './LeadsForm';
 import '../styles/Leads.css';
 
 const Leads = () => {
-    const [leads, setLeads] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const { leads, loading, error, fetchLeads } = useStore();
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isFetching, setIsFetching] = useState(false);
 
     useEffect(() => {
-        fetchLeads();
-    }, []);
-
-    const fetchLeads = async () => {
-        try {
-            // Get the current user
-            const { data: { user } } = await supabase.auth.getUser();
-
-            if (!user) throw new Error('No user found');
-
-            // Fetch leads for the current user
-            const { data, error } = await supabase
-                .from('leads')
-                .select('*')
-                .eq('user_id', user.id)
-                .order('created_at', { ascending: false });
-
-            if (error) throw error;
-
-            setLeads(data);
-        } catch (err) {
-            setError(err.message);
-        } finally {
-            setLoading(false);
+        if (leads.length === 0) {
+        fetchLeads(); // fetch only if no cached leads
         }
+    }, [leads.length, fetchLeads]);
+
+    const handleFormSubmit = async (formData) => {
+        setIsFetching(true);
+        setIsModalOpen(false);
+
+        // Send data to n8n
+        await fetch("http://localhost:5678/webhook-test/14c17b5d-bc40-4e37-962f-ff593521aff2", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(formData),
+        });
+
+        // Then refresh leads
+        await fetchLeads();
+
+        setIsFetching(false);
     };
 
     if (loading) return <div className="leads-loading">Loading leads...</div>;
@@ -40,6 +37,22 @@ const Leads = () => {
 
     return (
         <div className="leads-container">
+            <div>
+                <button
+                onClick={() => setIsModalOpen(true)}
+                disabled={isFetching}
+                className={`px-4 py-2 rounded ${
+                    isFetching ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500 text-white"
+                }`}
+                >
+                {isFetching ? "Fetching leads, please wait…" : "Get Leads"}
+                </button>
+            </div>
+            {/* Modal */}
+            <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+                <h2 className="text-xl font-semibold mb-4">Search Leads</h2>
+                <LeadSearchForm onSubmit={handleFormSubmit} />
+            </Modal>
             <div className="leads-header">
                 <h2>Your Leads</h2>
                 <p>{leads.length} leads found</p>
@@ -71,7 +84,7 @@ const Leads = () => {
                                     <div className="lead-organization">
                                         <span>{lead.organization_name}</span>
                                         <span className="lead-employees">
-                                            {lead.estimated_num_employees} employees
+                                            Est. {lead.estimated_num_employees} employees
                                         </span>
                                     </div>
                                 </td>

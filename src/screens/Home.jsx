@@ -1,6 +1,7 @@
 import {useState} from 'react';
 import { useNavigate } from 'react-router';
 import { supabase } from '../supabaseClient';
+import useStore from '../useStore';
 import Dashboard from '../components/Dashboard';
 import Templates from '../components/Templates';
 import Leads from '../components/Leads';
@@ -59,8 +60,10 @@ const Home = () => {
   const handleLogoutConfirm = async () => {
     try{
       await supabase.auth.signOut();
-      resetStore(); // Reset the store if you're using Zustand or similar
+      useStore.getState().resetStore();
       localStorage.clear();
+      localStorage.removeItem('user');
+      localStorage.removeItem('userId');
       setShowLogoutModal(false);
       navigate('/', {replace:true});
     } catch (error) {
@@ -152,7 +155,7 @@ const Home = () => {
 
                 {/* Main Content */}
                 <main className="main-content">
-                {renderContent()}
+                    {renderContent()}
                 </main>
             </div>
         </div>
