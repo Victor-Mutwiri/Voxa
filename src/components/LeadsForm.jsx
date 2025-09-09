@@ -1,5 +1,6 @@
 import { useState } from "react";
 import useStore from "../useStore";
+import '../styles/LeadsForm.css'
 
 export default function LeadSearchForm({ onSubmit }) {
     const userId  = useStore((state) => state.userId);
@@ -89,51 +90,55 @@ export default function LeadSearchForm({ onSubmit }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 p-4">
+    <form onSubmit={handleSubmit} className="lead-search-form">
+      <h2>Find Your Leads</h2>
+      
       {/* Job Titles */}
-      <div>
-        <label className="block mb-1">Job Titles (comma separated)</label>
+      <div className="form-group">
+        <label htmlFor="person_titles">Job Titles (comma separated)</label>
         <input
           type="text"
+          id="person_titles"
           name="person_titles"
           onChange={handleChange}
           placeholder="e.g. Marketing Manager, Sales Rep"
-          className="border p-2 w-full"
+          className="form-input"
         />
       </div>
 
       {/* Checkbox */}
-      <div>
-        <label>
-          <input
-            type="checkbox"
-            checked={formData.include_similar_titles}
-            onChange={handleCheckbox}
-          />
-          Include Similar Titles
-        </label>
+      <div className="checkbox-group">
+        <input
+          type="checkbox"
+          id="include_similar_titles"
+          checked={formData.include_similar_titles}
+          onChange={handleCheckbox}
+        />
+        <label htmlFor="include_similar_titles">Include Similar Titles</label>
       </div>
 
       {/* Locations */}
-      <div>
-        <label className="block mb-1">Locations (comma separated)</label>
+      <div className="form-group">
+        <label htmlFor="person_locations">Locations (comma separated)</label>
         <input
           type="text"
+          id="person_locations"
           name="person_locations"
           onChange={handleChange}
           placeholder="e.g. California, Chicago, Ireland"
-          className="border p-2 w-full"
+          className="form-input"
         />
       </div>
 
       {/* Seniorities */}
-      <div>
-        <label className="block mb-1">Seniorities</label>
+      <div className="form-group">
+        <label htmlFor="person_seniorities">Seniorities</label>
         <select
+          id="person_seniorities"
           name="person_seniorities"
           multiple
           onChange={handleMultiSelect}
-          className="border p-2 w-full"
+          className="form-input"
         >
           {seniorityOptions.map((s) => (
             <option key={s} value={s}>
@@ -141,19 +146,20 @@ export default function LeadSearchForm({ onSubmit }) {
             </option>
           ))}
         </select>
-        <p className="text-xs text-gray-500">
+        <p className="helper-text">
           Hold Ctrl (Windows) / Cmd (Mac) to select multiple
         </p>
       </div>
 
       {/* Employee ranges */}
-      <div>
-        <label className="block mb-1">Employee Ranges</label>
+      <div className="form-group">
+        <label htmlFor="organization_num_employees_ranges">Employee Ranges</label>
         <select
+          id="organization_num_employees_ranges"
           name="organization_num_employees_ranges"
           multiple
           onChange={handleMultiSelect}
-          className="border p-2 w-full"
+          className="form-input"
         >
           {employeeRangeOptions.map((r) => (
             <option key={r} value={r}>
@@ -161,26 +167,27 @@ export default function LeadSearchForm({ onSubmit }) {
             </option>
           ))}
         </select>
-        <p className="text-xs text-gray-500">
+        <p className="helper-text">
           Each range is in the format: min,max
         </p>
       </div>
 
       {/* Number of leads */}
-      <div>
-        <label className="block mb-1">Number of Leads (10 - 500)</label>
+      <div className="form-group">
+        <label htmlFor="number_of_leads">Number of Leads (10 - 500)</label>
         <input
           type="number"
+          id="number_of_leads"
           name="number_of_leads"
           value={formData.number_of_leads}
           min={10}
           max={500}
           onChange={handleNumberChange}
-          className="border p-2 w-full"
+          className="form-input"
         />
       </div>
 
-      <button type="submit" className="bg-blue-500 text-white px-4 py-2">
+      <button type="submit" className="submit-button">
         Search Leads
       </button>
     </form>
