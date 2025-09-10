@@ -3,6 +3,7 @@ import { supabase } from '../supabaseClient';
 import { useNavigate } from "react-router";
 import Login from "../components/Authentication/Login";
 import Signup from "../components/Authentication/Signup";
+import Logo from '../assets/Voxa Logo.png'
 import "../styles/Auth.css";
 
 const Auth = () => {
@@ -18,7 +19,10 @@ const Auth = () => {
             <div className="auth-card">
                 <div className="auth-header">
                     <h1 className="auth-title">Welcome</h1>
-                    <h5>Logo</h5>
+                    {/* <h5>Logo</h5> */}
+                    <a href="/">
+                        <img src={Logo}  alt="Voxa Logo" className="auth-logo" />
+                    </a>
                     <p className="auth-subtitle">
                         {activeTab === "login" 
                             ? "Sign in to your account" 

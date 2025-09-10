@@ -34,6 +34,13 @@
     margin: 0 0 8px 0;
 }
 
+.auth-logo {
+    width: 100px;     /* adjust size */
+    height: auto;     /* keep aspect ratio */
+    margin: 12px auto; /* center under the title */
+    display: block;
+}
+
 .auth-subtitle {
     color: #718096;
     font-size: 1rem;

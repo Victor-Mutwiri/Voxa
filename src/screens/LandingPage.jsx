@@ -1,5 +1,7 @@
 import Navbar from "../components/Navbar/Navbar";
 import { Search, Mail, BarChart3, Star, Users, TrendingUp, Target } from 'lucide-react';
+import Bored from '../assets/bored.png';
+import Boredperson from '../assets/bored person.png'
 import '../styles/landingpage.css'
 
 const LandingPage = () => {
@@ -9,32 +11,29 @@ const LandingPage = () => {
             
             {/* Hero Section */}
             <section className="hero-section">
+                {/* Decorative diamond elements */}
+                <div className="diamond-1"></div>
+                <div className="diamond-2"></div>
+                
                 <div className="hero-container">
                     <div className="hero-content">
                         <h1 className="hero-title">
-                            Find <span className="highlight">Better Leads</span><br />
-                            & Grow Your<br />
-                            Business
+                          <span className="highlight"> Traditional</span> Marketing
+                           <span className="slow-text">is SLOOOOW</span>
                         </h1>
                         <p className="hero-subtitle">
-                            Voxa helps small to medium sized businesses discover qualified leads and automate outreach to fill your pipeline with opportunities
+                            Voxa helps you reach more clients, book more meetings, and close more deals every month—without the grind of outdated strategies
                         </p>
                         <div className="hero-buttons">
                             <button className="btn-primary">Get Started Today</button>
-                            {/* <button className="btn-secondary">See Voxa in Action</button> */}
-                            <button className="btn-secondary">Watch Demo Video</button>
                         </div>
                     </div>
                     <div className="hero-visual">
                         <div className="chart-container">
-                            <TrendingUp size={48} className="chart-icon" />
-                            <div className="chart-label">
-                                <strong>Smart Lead<br />Generation</strong>
-                            </div>
+                            <img src={Boredperson} alt="Person looking bored at work"/>
                         </div>
                     </div>
                 </div>
-                <button className="book-demo-btn">📅 Book a Demo</button>
             </section>
 
             {/* Trust Section */}

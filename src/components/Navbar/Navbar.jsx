@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
+import Logo from '../../assets/Voxa Logo.png';
 import "./Navbar.css";
 
 const Navbar = () => {
@@ -10,7 +11,7 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="logo-container">
         <a href="/">
-        Logo
+        <img src={Logo} alt="Voxa Logo" className="logo" />
           {/* <img src={Logo} alt="Vimtec Logo" className="logo" /> */}
         </a>
       </div>
