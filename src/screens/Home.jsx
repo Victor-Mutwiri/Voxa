@@ -17,6 +17,7 @@ import {
     Users,
     Settings
 } from 'lucide-react';
+import Logo from '../assets/Voxa Logo.png'
 import '../styles/Home.css'
 
 const Home = () => {
@@ -83,10 +84,10 @@ const Home = () => {
                         <div className="nav-header-inner">
                             <div className="nav-logo">
                                 <a href="/">
-                                    <Activity className="nav-logo-icon" />
+                                    <img src={Logo} alt="Voxa Logo" className="logo" />
+                                    {/* <Activity className="nav-logo-icon" /> */}
                                 </a>
                             </div>
-                            <span className="nav-title"> <a href="/">Voxa</a></span>
                         </div>
                     </div>
                     <nav className="nav-items">
