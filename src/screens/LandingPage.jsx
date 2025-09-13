@@ -1,8 +1,8 @@
 import Navbar from "../components/Navbar/Navbar";
 import { Search, Mail, BarChart3, Star, Users, TrendingUp, Target } from 'lucide-react';
 import Bored from '../assets/bored.png';
-import Boredperson from '../assets/bored person.png'
-import '../styles/landingpage.css'
+import Boredperson from '../assets/bored person.png';
+import '../styles/landingpage.css';
 
 const LandingPage = () => {
     return (

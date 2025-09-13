@@ -6,6 +6,7 @@ import Dashboard from '../components/Dashboard';
 import Templates from '../components/Templates';
 import Leads from '../components/Leads';
 import Integrations from '../components/Integrations';
+import Outreach from '../components/Outreach';
 import Settingz from '../components/Settingz';
 import LogoutModal from '../components/Authentication/LogoutModal';
 import { 
@@ -33,6 +34,7 @@ const Home = () => {
     const navigationItems = [
         { id: 'overview', label: 'Overview', icon: LayoutDashboard },
         { id: 'leads', label: 'Leads', icon: BookText },
+        { id: 'outreach', label: 'Outreach', icon: BookText },
         { id: 'templates', label: 'Templates', icon: Users },
         { id: 'integrations', label: 'Integrations', icon: Users },
         { id: 'settings', label: 'Settings', icon: Settings },
@@ -44,6 +46,8 @@ const Home = () => {
             return <Dashboard />;
         case 'leads':
             return <Leads />;
+        case 'outreach':
+            return <Outreach />;
         case 'templates':
             return <Templates />;
         case 'integrations':

@@ -22,11 +22,26 @@ const Integrations = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("SMTP Details Submitted:", formData);
-    // send to backend / n8n webhook here
+    try {
+      const response = await fetch("http://localhost:5678/webhook-test/b490f27e-3c27-4d66-aeae-5ed57b95317a", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+      if (result.success) {
+        alert("SMTP connected successfully!");
+      } else {
+        alert(`Error: ${result.message}`);
+      }
+    } catch (error) {
+      alert("Connection failed. Please try again.");
+    }
   };
+
 
   return (
     <div className="integrations-container">

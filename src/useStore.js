@@ -20,7 +20,7 @@ const useStore = create(
           if (!userId) throw new Error("No user found");
 
           const { data, error } = await supabase
-            .from("leads")
+            .from("extracted_leads")
             .select("*")
             .eq("user_id", userId)
             .order("created_at", { ascending: false });
