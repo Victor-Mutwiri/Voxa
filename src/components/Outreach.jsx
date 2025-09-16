@@ -22,7 +22,7 @@ const Outreach = () => {
 
     try {
       const res = await fetch(
-        "http://localhost:5678/webhook-test/b490f27e-3c27-4d66-aeae-5ed57b95317a",
+        "http://localhost:5678/webhook-test/sendmail",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

@@ -1,4 +1,16 @@
 .templates-root{
   display: grid;
   grid-template-columns: 1fr 2fr;
+  gap: 20px;
+}
+.templates{
+  display:column;
+  gap: 20px;
+}
+
+.templates-lists{
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  /* max-height: 80vh; */
 }

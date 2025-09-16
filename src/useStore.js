@@ -7,6 +7,10 @@ const useStore = create(
   persist(
     (set, get) => ({
       leads: [],
+      emailBodies: [],
+      emailSubjects: [],
+      activeEmailSubject: null,
+      activeEmailBody: null,
       loading: false,
       error: null,
       userId: null,
@@ -34,7 +38,97 @@ const useStore = create(
         }
       },
 
-      resetStore: () => set({ leads: [], loading: false, error: null, userId: null }),
+      fetchEmailBodies: async () => {
+        set({ loading: true, error: null });
+        try {
+          const userId = get().userId;
+          if (!userId) throw new Error("No user found");
+
+          const { data, error } = await supabase
+            .from("templates")
+            .select("*")
+            .eq("user_id", userId)
+            .eq("type", "EmailBody")
+            .order("created_at", { ascending: false });
+
+          if (error) throw error;
+          set({ emailBodies: data });
+        } catch (err) {
+          set({ error: err.message });
+        } finally {
+          set({ loading: false });
+        }
+      },
+
+      fetchEmailSubjects: async () => {
+        set({ loading: true, error: null });
+        try {
+          const userId = get().userId;
+          if (!userId) throw new Error("No user found");
+
+          const { data, error } = await supabase
+            .from("templates")
+            .select("*")
+            .eq("user_id", userId)
+            .eq("type", "EmailSubject")
+            .order("created_at", { ascending: false });
+
+          if (error) throw error;
+          set({ emailSubjects: data });
+        } catch (err) {
+          set({ error: err.message });
+        } finally {
+          set({ loading: false });
+        }
+      },
+
+      // Set Active Email Body
+      setActiveEmailBody: (template) => {
+        set({ activeEmailBody: template });
+      },
+      // Set Active Email Body
+      setActiveEmailSubject: (template) => {
+        set({ activeEmailSubject: template });
+      },
+
+      // Delete template
+      deleteTemplate: async (templateId, type) => {
+        try {
+          const { error } = await supabase
+            .from("templates")
+            .delete()
+            .eq("id", templateId);
+
+          if (error) throw error;
+
+          // Update local state after deletion
+          if (type === "EmailBody") {
+            set({
+              emailBodies: get().emailBodies.filter((t) => t.id !== templateId),
+            });
+          } else if (type === "EmailSubject") {
+            set({
+              emailSubjects: get().emailSubjects.filter(
+                (t) => t.id !== templateId
+              ),
+            });
+          }
+        } catch (err) {
+          console.error("Delete error:", err.message);
+          set({ error: err.message });
+        }
+      },
+
+      resetStore: () => 
+        set({ 
+          leads: [],
+          emailBodies: [],
+          emailSubjects: [],
+          activeEmailSubject: null,
+          activeEmailBody: null,
+          loading: false,
+          error: null,
+          userId: null }),
     }),
     { name: "app-storage" }
   )

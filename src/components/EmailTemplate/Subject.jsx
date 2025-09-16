@@ -1,6 +1,8 @@
 import { useState } from "react";
 import "../../styles/Message.css";
-import { Loader2, Save, Wand2 } from "lucide-react"; // lucide icons
+import useStore from "../../useStore";
+import { supabase } from "../../supabaseClient";
+import { Loader2, Save, Wand2, Edit3,Check, X } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeading } from "@fortawesome/free-solid-svg-icons";
 
@@ -9,8 +11,12 @@ const Subject = () => {
   const [subject, setSubject] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
-  // Call your n8n AI agent webhook
+  // Edit state
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedSubject, setEditedSubject] = useState("");
+
   const handleGenerate = async () => {
     if (!prompt.trim()) return;
 
@@ -18,28 +24,101 @@ const Subject = () => {
     setError(null);
 
     try {
-      const res = await fetch("https://your-n8n-webhook-url", {
+      const res = await fetch("http://localhost:5678/webhook-test/template", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt }),
       });
 
-      if (!res.ok) throw new Error("Failed to generate subject line");
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status}: Failed to generate subject line`);
+      }
 
-      const data = await res.json();
-      setSubject(data.subject || data.message || "No subject generated");
+      // Get response text first to debug
+      const responseText = await res.text();
+      console.log("Raw response:", responseText);
+
+      // Try to parse JSON
+      let data;
+      try {
+        data = JSON.parse(responseText);
+      } catch (parseError) {
+        console.error("JSON parse error:", parseError);
+        throw new Error("Invalid JSON response from server");
+      }
+
+      // Handle different response formats
+      let generatedSubject;
+      if (Array.isArray(data) && data.length > 0) {
+        // Handle array response: [{"subject": "..."}] or [{"output": "..."}]
+        generatedSubject = data[0].subject || data[0].output;
+      } else if (data.subject) {
+        // Handle object response: {"subject": "..."}
+        generatedSubject = data.subject;
+      } else if (data.output) {
+        // Handle object response: {"output": "..."}
+        generatedSubject = data.output;
+      } else {
+        throw new Error("No subject found in response");
+      }
+
+      setSubject(generatedSubject || "No subject generated");
     } catch (err) {
+      console.error("Generation error:", err);
       setError(err.message);
     } finally {
       setLoading(false);
     }
   };
 
-  // Placeholder for Supabase save logic
+  const handleEdit = () => {
+    setEditedSubject(subject);
+    setIsEditing(true);
+  };
+
+  const confirmEdit = () => {
+    setSubject(editedSubject);
+    setIsEditing(false);
+  };
+
   const handleSave = () => {
     console.log("Save clicked", subject);
+    setShowModal(true);
     // Add Supabase save logic here
   };
+
+  // Confirm save (you’ll add Supabase logic here)
+  const confirmSave = async () => {
+    setShowModal(false);
+    const userId = useStore.getState().userId; // grab from zustand
+
+    if (!userId) {
+        console.error("No userId found in store. Cannot save template.");
+        setError("Unable to save: No user found.");
+        return;
+    }
+
+    try {
+        const { data, error } = await supabase
+        .from("templates")
+        .insert([
+            {
+            user_id: userId,
+            type: "Subject",
+            template: subject,
+            },
+        ])
+        .select();
+
+        if (error) throw error;
+
+        console.log("Saved successfully:", data);
+        alert("✅ Template saved successfully!");
+    } catch (err) {
+        console.error("Error saving template:", err.message);
+        setError(err.message);
+    }
+    };
 
   return (
     <div className="message-container">
@@ -47,7 +126,6 @@ const Subject = () => {
         <FontAwesomeIcon icon={faHeading} /> Email Subject Line
       </h2>
 
-      {/* Prompt input */}
       <textarea
         className="message-textarea"
         rows={3}
@@ -56,10 +134,9 @@ const Subject = () => {
         onChange={(e) => setPrompt(e.target.value)}
       />
 
-      {/* Generate button */}
       <button
         onClick={handleGenerate}
-        disabled={loading}
+        disabled={loading || !prompt.trim()}
         className="button button-generate"
       >
         {loading ? (
@@ -73,25 +150,77 @@ const Subject = () => {
         )}
       </button>
 
-      {/* Save button */}
-      <button
-        onClick={handleSave}
-        disabled={!subject}
-        className="button button-save"
-      >
-        <Save size={18} /> Save
-      </button>
-
-      {/* Error message */}
       {error && <p className="message-error">{error}</p>}
 
-      {/* Display generated subject line */}
       {subject && (
         <div className="message-output">
           <h3>Generated Subject Line:</h3>
-          <p>{subject}</p>
+          {isEditing ? (
+            <div className="edit-container">
+              <input
+                type="text"
+                className="edit-input"
+                value={editedSubject}
+                onChange={(e) => setEditedSubject(e.target.value)}
+              />
+              <button onClick={confirmEdit} className="button button-confirm">
+                <Check size={18} /> Confirm Edit
+              </button>
+            </div>
+          ) : (
+            <>
+              <p>{subject}</p>
+              <button onClick={handleEdit} className="button button-edit">
+                <Edit3 size={18} /> Edit
+              </button>
+            </>
+          )}
+          <button
+            onClick={handleSave}
+            disabled={!subject}
+            className="button button-save"
+        >
+            <Save size={18} /> Save
+        </button>
         </div>
       )}
+      {/* Modal */}
+        {showModal && (
+            <div className="modal-overlay">
+            <div className="modal">
+                <div className="modal-header">
+                <h3>Confirm Save</h3>
+                <button
+                    onClick={() => setShowModal(false)}
+                    className="modal-close"
+                >
+                    <X size={20} />
+                </button>
+                </div>
+                <div className="modal-body">
+                <h4>Here’s the Subject you are about to save:</h4>
+                <div className="modal-preview">
+                    <p>{subject}</p>
+                </div>
+                <p className="modal-disclaimer">
+                    ⚠️ Please review and edit this template to ensure accuracy before
+                    saving. Saved templates will be reusable in future emails.
+                </p>
+                </div>
+                <div className="modal-footer">
+                <button
+                    onClick={() => setShowModal(false)}
+                    className="button button-cancel"
+                >
+                    Cancel
+                </button>
+                <button onClick={confirmSave} className="button button-save">
+                    <Save size={18} /> Confirm Save
+                </button>
+                </div>
+            </div>
+            </div>
+        )}
     </div>
   );
 };

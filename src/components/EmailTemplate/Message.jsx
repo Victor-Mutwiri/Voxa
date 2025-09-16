@@ -1,6 +1,8 @@
 import { useState } from "react";
-import '../../styles/Message.css'
-import { Loader2, Save, Wand2 } from "lucide-react"; // lucide icons
+import "../../styles/Message.css";
+import useStore from "../../useStore";
+import { supabase } from "../../supabaseClient";
+import { Loader2, Save, Wand2, Edit3,Check, X } from "lucide-react"; // lucide icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelopeOpenText } from "@fortawesome/free-solid-svg-icons";
 
@@ -9,6 +11,11 @@ const Message = () => {
   const [emailBody, setEmailBody] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+
+  // Edit state
+    const [isEditing, setIsEditing] = useState(false);
+    const [editedMessage, setEditedMessage] = useState("");
 
   // Call your n8n AI agent webhook
   const handleGenerate = async () => {
@@ -18,16 +25,42 @@ const Message = () => {
     setError(null);
 
     try {
-      const res = await fetch("https://your-n8n-webhook-url", {
+      const res = await fetch("http://localhost:5678/webhook-test/template", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt }),
       });
 
-      if (!res.ok) throw new Error("Failed to generate email body");
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status}: Failed to generate email body`);
+      }
 
-      const data = await res.json();
-      setEmailBody(data.emailBody || data.message || "No response found");
+      // Get response text first for debugging
+      const responseText = await res.text();
+      console.log("Raw response:", responseText);
+
+      // Try parsing JSON
+      let data;
+      try {
+        data = JSON.parse(responseText);
+      } catch (parseError) {
+        console.error("JSON parse error:", parseError);
+        throw new Error("Invalid JSON response from server");
+      }
+
+      // Handle different response formats
+      let generatedEmailBody;
+      if (Array.isArray(data) && data.length > 0) {
+        generatedEmailBody = data[0].subject || data[0].output;
+      } else if (data.subject) {
+        generatedEmailBody = data.subject;
+      } else if (data.output) {
+        generatedEmailBody = data.output;
+      } else {
+        throw new Error("No subject found in response");
+      }
+
+      setEmailBody(generatedEmailBody || "No subject generated");
     } catch (err) {
       setError(err.message);
     } finally {
@@ -35,11 +68,54 @@ const Message = () => {
     }
   };
 
-  // Placeholder for Supabase save logic
-  const handleSave = () => {
-    console.log("Save clicked", emailBody);
-    // Add Supabase save logic here
+  const handleEdit = () => {
+    setEditedMessage(emailBody);
+    setIsEditing(true);
   };
+
+  const confirmEdit = () => {
+    setEmailBody(editedMessage);
+    setIsEditing(false);
+  };
+
+  // Open modal before saving
+  const handleSave = () => {
+    setShowModal(true);
+  };
+
+  // Confirm save (you’ll add Supabase logic here)
+  const confirmSave = async () => {
+    setShowModal(false);
+    const userId = useStore.getState().userId; // grab from zustand
+
+    if (!userId) {
+        console.error("No userId found in store. Cannot save template.");
+        setError("Unable to save: No user found.");
+        return;
+    }
+
+    try {
+        const { data, error } = await supabase
+        .from("templates")
+        .insert([
+            {
+            user_id: userId,
+            type: "EmailBody",
+            template: emailBody,
+            },
+        ])
+        .select();
+
+        if (error) throw error;
+
+        console.log("Saved successfully:", data);
+        alert("✅ Template saved successfully!");
+    } catch (err) {
+        console.error("Error saving template:", err.message);
+        setError(err.message);
+    }
+    };
+
 
   return (
     <div className="message-container">
@@ -59,7 +135,7 @@ const Message = () => {
       {/* Generate button */}
       <button
         onClick={handleGenerate}
-        disabled={loading}
+        disabled={loading || !prompt.trim()}
         className="button button-generate"
       >
         {loading ? (
@@ -73,15 +149,6 @@ const Message = () => {
         )}
       </button>
 
-      {/* Save button */}
-      <button
-        onClick={handleSave}
-        disabled={!emailBody}
-        className="button button-save"
-      >
-        <Save size={18} /> Save
-      </button>
-
       {/* Error message */}
       {error && <p className="message-error">{error}</p>}
 
@@ -89,7 +156,75 @@ const Message = () => {
       {emailBody && (
         <div className="message-output">
           <h3>Generated Email Body:</h3>
-          <p>{emailBody}</p>
+          {isEditing ? (
+            <div className="edit-container">
+              <textarea
+                type="text"
+                rows={4}
+                className="edit-input"
+                value={editedMessage}
+                onChange={(e) => setEditedMessage(e.target.value)}
+              />
+              <button onClick={confirmEdit} className="button button-confirm">
+                <Check size={18} /> Confirm Edit
+              </button>
+            </div>
+          ) : (
+            <>
+              <p>{emailBody}</p>
+              <button onClick={handleEdit} className="button button-edit">
+                <Edit3 size={18} /> Edit
+              </button>
+            </>
+          )}
+          {/* Save button */}
+          <button
+            onClick={handleSave}
+            disabled={!emailBody}
+            className="button button-save"
+          >
+            <Save size={18} /> Save
+          </button>
+        </div>
+      )}
+
+      {/* Modal */}
+      {showModal && (
+        <div className="save-modal-overlay">
+          <div className="save-modal">
+            <div className="save-modal-header">
+              <h3>Confirm Save</h3>
+              <button
+                onClick={() => setShowModal(false)}
+                className="save-modal-close"
+              >
+                <X size={20} />
+              </button>
+            </div>
+            <div className="save-modal-body">
+              <h4>Here’s the email body you are about to save:</h4>
+              <div className="modal-preview">
+                <p>{emailBody}</p>
+              </div>
+              <p className="modal-disclaimer">
+                <i>
+                ⚠️ Please review and edit this template to ensure accuracy before
+                saving. Saved templates will be reusable in future emails.
+                </i>
+              </p>
+            </div>
+            <div className="save-modal-footer">
+              <button
+                onClick={() => setShowModal(false)}
+                className="button modal-button-cancel"
+              >
+                Cancel
+              </button>
+              <button onClick={confirmSave} className="button button-save">
+                <Save size={18} /> Confirm Save
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
