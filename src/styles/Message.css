@@ -1,0 +1,93 @@
+.message-container {
+  padding: 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  max-width: 600px;
+  margin: auto;
+}
+
+.message-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #1f2937;
+}
+
+.message-textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  resize: vertical;
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+  font-family: inherit;
+  transition: border 0.2s ease;
+}
+
+.message-textarea:focus {
+  border-color: #2563eb;
+  outline: none;
+}
+
+.button {
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.button-generate {
+  background: #2563eb;
+  color: #ffffff;
+  margin-right: 0.5rem;
+}
+
+.button-generate:hover:not(:disabled) {
+  background: #1d4ed8;
+}
+
+.button-save {
+  background: #059669;
+  color: #ffffff;
+}
+
+.button-save:hover:not(:disabled) {
+  background: #047857;
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.message-error {
+  color: #dc2626;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.message-output {
+  margin-top: 1rem;
+  padding: 0.8rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #f9fafb;
+}
+
+.message-output h3 {
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+  color: #111827;
+}

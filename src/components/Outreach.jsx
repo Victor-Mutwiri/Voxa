@@ -3,10 +3,6 @@ import "../styles/Outreach.css";
 
 const Outreach = () => {
   const [formData, setFormData] = useState({
-    host: "",
-    port: 587,
-    username: "",
-    password: "",
     to: "",
     subject: "",
     text: "",
@@ -26,7 +22,7 @@ const Outreach = () => {
 
     try {
       const res = await fetch(
-        "https://wiwfljidzgczcgrunlnb.supabase.co/functions/v1/send-email",
+        "http://localhost:5678/webhook-test/b490f27e-3c27-4d66-aeae-5ed57b95317a",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -34,12 +30,16 @@ const Outreach = () => {
         }
       );
 
-      const data = await res.json();
-      if (data.success) {
-        setStatus("✅ Email sent successfully!");
-      } else {
-        setStatus("❌ Failed: " + data.error);
+      // n8n might not always send JSON back
+      let message = "✅ Sent to webhook!";
+      try {
+        const data = await res.json();
+        message = `✅ Sent! Response: ${JSON.stringify(data)}`;
+      } catch {
+        message = "✅ Sent! (No JSON response)";
       }
+
+      setStatus(message);
     } catch (err) {
       console.error(err);
       setStatus("❌ Error: " + err.message);
@@ -50,38 +50,6 @@ const Outreach = () => {
     <section className="outreach">
       <h2>Outreach Test</h2>
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="host"
-          placeholder="SMTP Host"
-          value={formData.host}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="number"
-          name="port"
-          placeholder="SMTP Port"
-          value={formData.port}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="email"
-          name="username"
-          placeholder="SMTP Username"
-          value={formData.username}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="SMTP Password"
-          value={formData.password}
-          onChange={handleChange}
-          required
-        />
         <input
           type="email"
           name="to"
