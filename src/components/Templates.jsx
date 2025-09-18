@@ -3,6 +3,7 @@ import Message from "./EmailTemplate/Message";
 import Subject from "./EmailTemplate/Subject";
 import EmailBodies from "./EmailTemplate/EmailBodies";
 import EmailSubjects from "./EmailTemplate/EmailSubjects";
+import Templatespreview from "./EmailTemplate/Templatespreview";
 
 const Templates = () => {
 
@@ -21,7 +22,7 @@ const Templates = () => {
           </div> 
         </div>
         <div className="templates-preview">
-          <p>The full body section with both the subject and email goes here</p>
+          <Templatespreview/>
         </div>
       </div>
     </div>
