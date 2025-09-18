@@ -1,107 +1,112 @@
-import { useEffect, useState } from 'react';
-import useStore from '../useStore';
-import Modal from '../components/Modal';
-import LeadSearchForm from './LeadsForm';
+// Leads.jsx
+import { useEffect, useState } from "react";
+import useStore from "../useStore";
+import Modal from "../components/Modal";
+import LeadSearchForm from "./LeadsForm";
+/* import '../styles/Outreach.css'; */
 import '../styles/Leads.css';
+import { Briefcase, MapPin, Globe, Link as LinkIcon } from "lucide-react";
 
 const Leads = () => {
-    const { leads, loading, error, fetchLeads } = useStore();
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isFetching, setIsFetching] = useState(false);
+  const { leads, loading, error, fetchLeads } = useStore();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isFetching, setIsFetching] = useState(false);
 
-    useEffect(() => {
-        if (leads.length === 0) {
-        fetchLeads(); // fetch only if no cached leads
-        }
-    }, [leads.length, fetchLeads]);
+  useEffect(() => {
+    if (leads.length === 0) {
+      fetchLeads();
+    }
+  }, [leads.length, fetchLeads]);
 
-    const handleFormSubmit = async (formData) => {
-        setIsFetching(true);
-        setIsModalOpen(false);
+  const handleFormSubmit = async (formData) => {
+    setIsFetching(true);
+    setIsModalOpen(false);
 
-        // Send data to n8n
-        await fetch("http://localhost:5678/webhook-test/14c17b5d-bc40-4e37-962f-ff593521aff2", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(formData),
-        });
+    await fetch("http://localhost:5678/webhook-test/14c17b5d-bc40-4e37-962f-ff593521aff2", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
 
-        // Then refresh leads
-        await fetchLeads();
+    await fetchLeads();
+    setIsFetching(false);
+  };
 
-        setIsFetching(false);
-    };
+  return (
+    <div className="leads-container">
+      <div>
+        <button
+            onClick={() => setIsModalOpen(true)}
+            disabled={isFetching}
+            className={`custom-btn ${isFetching ? "disabled" : ""}`}
+            >
+            {isFetching ? "Fetching leads, please wait…" : "Get Leads"}
+        </button>
+      </div>
 
-    if (loading) return <div className="leads-loading">Loading leads...</div>;
-    if (error) return <div className="leads-error">Error: {error}</div>;
+      {/* Modal */}
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <h2 className="text-xl font-semibold mb-4">Search Leads</h2>
+        <LeadSearchForm onSubmit={handleFormSubmit} />
+      </Modal>
 
-    return (
-        <div className="leads-container">
-            <div>
-                <button
-                onClick={() => setIsModalOpen(true)}
-                disabled={isFetching}
-                className={`px-4 py-2 rounded ${
-                    isFetching ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500 text-white"
-                }`}
-                >
-                {isFetching ? "Fetching leads, please wait…" : "Get Leads"}
-                </button>
-            </div>
-            {/* Modal */}
-            <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-                <h2 className="text-xl font-semibold mb-4">Search Leads</h2>
-                <LeadSearchForm onSubmit={handleFormSubmit} />
-            </Modal>
-            <div className="leads-header">
-                <h2>Your Leads</h2>
-                <p>{leads.length} leads found</p>
-            </div>
+      {/* <div className="leads-header">
+        <h2>Your Leads</h2>
+        <p>{leads.length} leads found</p>
+      </div> */}
 
-            <div className="leads-table-container">
-                <table className="leads-table">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Title</th>
-                            <th>Organization</th>
-                            <th>Email</th>
-                            <th>Location</th>
-                            <th>Industry</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {leads.map((lead) => (
-                            <tr key={lead.id}>
-                                <td>{lead.name}</td>
-                                <td>
-                                    <div className="lead-title">
-                                        <span>{lead.title}</span>
-                                        <span className="lead-seniority">{lead.seniority}</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div className="lead-organization">
-                                        <span>{lead.organization_name}</span>
-                                        <span className="lead-employees">
-                                            Est. {lead.estimated_num_employees} employees
-                                        </span>
-                                    </div>
-                                </td>
-                                <td>{lead.email}</td>
-                                <td>
-                                    {[lead.city, lead.state, lead.country]
-                                        .filter(Boolean)
-                                        .join(', ')}
-                                </td>
-                                <td>{lead.industry}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
+      {loading && <p className="status-msg">⏳ Loading leads...</p>}
+      {error && <p className="status-msg error">❌ {error}</p>}
+      {!loading && leads.length === 0 && (
+        <p className="status-msg">No leads found. Try fetching some!</p>
+      )}
+
+      {leads.length > 0 && (
+        <div className="table-wrapper">
+          <table className="lead-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th><Briefcase size={16} /> Title</th>
+                <th>Seniority</th>
+                <th><MapPin size={16} /> Location</th>
+                <th><Globe size={16} /> Industry</th>
+                <th>Website</th>
+              </tr>
+            </thead>
+            <tbody>
+              {leads.map((lead) => (
+                <tr key={lead.id}>
+                  <td className="lead-name">{lead.name || "—"}</td>
+                  <td>{lead.title || "—"}</td>
+                  <td>{lead.seniority || "—"}</td>
+                  <td>
+                    {[lead.city, lead.state, lead.country].filter(Boolean).join(", ") || "—"}
+                  </td>
+                  <td>{lead.industry || "—"}</td>
+                  <td>
+                    {lead.company_website ? (
+                      <a
+                        href={lead.company_website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="connect-btn"
+                      >
+                        <LinkIcon size={14} />
+                        Visit
+                      </a>
+                    ) : (
+                      <span className="placeholder">—</span>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-    );
+      )}
+    </div>
+  );
 };
 
 export default Leads;

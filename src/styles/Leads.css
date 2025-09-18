@@ -1,81 +1,113 @@
-.leads-container {
+/* .leads-container {
     padding: 2rem;
-    /* max-width: 900px; */
+} */
+
+/* Get Leads button */
+.custom-btn {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  background-color: #2563eb; /* blue-500 */
+  color: #fff;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.15s ease;
 }
 
-.leads-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
+.custom-btn:hover {
+  background-color: #1e4bb8; /* darker blue */
+  transform: translateY(-1px);
 }
 
-.leads-header h2 {
-    font-size: 1.5rem;
-    font-weight: 600;
+.custom-btn:active {
+  background-color: #1a3d99;
+  transform: translateY(0);
 }
 
-.leads-table-container {
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    overflow: auto;
+.custom-btn.disabled,
+.custom-btn:disabled {
+  background-color: #9ca3af; /* gray-400 */
+  color: #f3f4f6;
+  cursor: not-allowed;
+  transform: none;
 }
 
-.leads-table {
-    width: 100%;
-    border-collapse: collapse;
-    white-space: nowrap;
+
+/* Leads Table styling */
+
+.table-wrapper {
+  overflow-x: auto;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
 }
 
-.leads-table th {
-    background: #f9fafb;
-    padding: 12px 24px;
-    text-align: left;
-    font-weight: 500;
-    color: #374151;
-    border-bottom: 1px solid #e5e7eb;
+/* Lead Table */
+.lead-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
 }
 
-.leads-table td {
-    padding: 16px 24px;
-    border-bottom: 1px solid #e5e7eb;
-    color: #1f2937;
+.lead-table thead {
+  background: #f0f4f9;
 }
 
-.leads-table tr:hover {
-    background-color: #f9fafb;
+.lead-table th, 
+.lead-table td {
+  padding: 0.9rem 1rem;
+  text-align: left;
+  font-size: 0.95rem;
 }
 
-.lead-title, .lead-organization {
-    display: flex;
-    flex-direction: column;
+.lead-table th {
+  font-weight: 600;
+  color: #333;
 }
 
-.lead-seniority {
-    font-size: 0.875rem;
-    color: #6b7280;
-    margin-top: 2px;
+.lead-table tbody tr {
+  border-bottom: 1px solid #eee;
+  transition: background 0.2s ease;
 }
 
-.lead-employees {
-    font-size: 0.875rem;
-    color: #6b7280;
-    margin-top: 2px;
+.lead-table tbody tr:hover {
+  background: #f9fafb;
 }
 
-.leads-loading {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 200px;
-    color: #6b7280;
+.lead-name {
+  font-weight: 600;
+  color: #222;
 }
 
-.leads-error {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 200px;
-    color: #ef4444;
+/* Connect Button */
+.connect-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.4rem 0.8rem;
+  background: #0a66c2;
+  color: white;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background 0.3s ease;
+  white-space: nowrap;
+}
+
+.connect-btn:hover {
+  background: #004182;
+}
+
+/* Status messages */
+.status-msg {
+  text-align: center;
+  margin: 1rem 0;
+  font-size: 0.95rem;
+}
+
+.status-msg.error {
+  color: red;
 }
