@@ -95,7 +95,7 @@
 
 /* Linkedin outreach styling */
 .linkedin-outreach {
-  margin-top: 1rem;
+  margin-top: 0.3rem;
 }
 
 .linkedin-title {
@@ -184,4 +184,88 @@
   color: red;
 }
 
+
+/* Email Outreach Layout */
+.email-panels {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  /* margin-top: 1rem; */
+}
+.lead-table-panel {
+  /* background: white; */
+  /* border-radius: 12px; */
+  /* padding: 1rem; */
+  /* box-shadow: 0 2px 8px rgba(0,0,0,0.05); */
+}
+
+.preview-panel {
+  /* background: #f9fafb; */
+  /* border-radius: 12px; */
+  /* padding: 1rem; */
+  /* box-shadow: 0 2px 8px rgba(0,0,0,0.05); */
+}
+
+/* Email Preview */
+.email-preview {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.email-preview.empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #777;
+  font-size: 0.95rem;
+}
+
+.email-header {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 0.8rem;
+  margin-bottom: 0.8rem;
+}
+
+.email-body {
+  flex: 1;
+  font-size: 0.95rem;
+  color: #333;
+  line-height: 1.5;
+  background: white;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.email-body .placeholder {
+  color: #999;
+  font-style: italic;
+}
+
+
+.email-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.send-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #0a66c2;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  border: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.send-btn:hover {
+  background: #004182;
+}
 

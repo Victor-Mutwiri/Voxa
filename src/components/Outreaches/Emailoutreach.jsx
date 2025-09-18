@@ -1,80 +1,79 @@
-import { useState } from "react";
-import '../../styles/Outreach.css'
+import { useEffect, useState } from "react";
+import useStore from "../../useStore";
+import "../../styles/Outreach.css";
+import { Briefcase, Building2, Globe, Mail } from "lucide-react";
+import EmailPreview from "./EmailPreview";
 
 const EmailOutreach = () => {
-  const [formData, setFormData] = useState({
-    to: "",
-    subject: "",
-    text: "",
-  });
-  const [status, setStatus] = useState(null);
+  const { leads, fetchLeads, loading, error, userId } = useStore();
+  const [selectedLead, setSelectedLead] = useState(null);
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setStatus("📤 Sending...");
-
-    try {
-      const res = await fetch("http://localhost:5678/webhook-test/sendmail", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-
-      let message = "✅ Sent to webhook!";
-      try {
-        const data = await res.json();
-        message = `✅ Sent! Response: ${JSON.stringify(data)}`;
-      } catch {
-        message = "✅ Sent! (No JSON response)";
-      }
-
-      setStatus(message);
-    } catch (err) {
-      console.error(err);
-      setStatus("❌ Error: " + err.message);
+  useEffect(() => {
+    if (userId) {
+      fetchLeads();
     }
-  };
+  }, [userId, fetchLeads]);
+
+  const validLeads = leads.filter((lead) => lead.name && lead.email);
 
   return (
     <div className="email-outreach">
-      <form className="email-form" onSubmit={handleSubmit}>
-        <input
-          type="email"
-          name="to"
-          placeholder="Recipient Email"
-          value={formData.to}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="text"
-          name="subject"
-          placeholder="Subject"
-          value={formData.subject}
-          onChange={handleChange}
-          required
-        />
-        <textarea
-          name="text"
-          placeholder="Message"
-          value={formData.text}
-          onChange={handleChange}
-          required
-        />
+      <div className="email-panels">
+        {/* Left Panel → Leads Table */}
+        <div className="lead-table-panel">
+          {/* <h3 className="outreach-title">
+            <Mail size={20} color="#0a66c2" /> Email Outreach
+          </h3> */}
 
-        <button type="submit" className="send-btn">
-          Send Email
-        </button>
-      </form>
+          {loading && <p className="status-msg">⏳ Loading leads...</p>}
+          {error && <p className="status-msg error">❌ {error}</p>}
 
-      {status && <p className="status-msg">{status}</p>}
+          {!loading && validLeads.length === 0 && (
+            <p className="status-msg">
+              No valid leads found. Extract some to get started!
+            </p>
+          )}
+
+          {validLeads.length > 0 && (
+            <div className="table-wrapper">
+              <table className="lead-table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th><Briefcase size={14} /> Title</th>
+                    <th><Building2 size={14} /> Organization</th>
+                    <th><Globe size={14} /> Industry</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {validLeads.map((lead) => (
+                    <tr key={lead.id}>
+                      <td>{lead.name}</td>
+                      <td>{lead.title || "—"}</td>
+                      <td>{lead.organization_name || "—"}</td>
+                      <td>{lead.industry || "—"}</td>
+                      <td>
+                        <button
+                          className="connect-btn"
+                          onClick={() => setSelectedLead(lead)}
+                        >
+                          Preview Email
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+
+        {/* Right Panel → Email Preview */}
+        <div className="preview-panel">
+          <EmailPreview lead={selectedLead} />
+        </div>
+      </div>
     </div>
   );
 };
