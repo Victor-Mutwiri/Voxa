@@ -1,7 +1,8 @@
 import Navbar from "../components/Navbar/Navbar";
 import { Search, Mail, BarChart3, Star, Users, TrendingUp, Target } from 'lucide-react';
-import Bored from '../assets/bored.png';
 import Boredperson from '../assets/bored person.png';
+import Landingpageimage from '../assets/Heroimage.jpg';
+/* import Landingpageimage from '../assets/Landingpage.png'; */
 import '../styles/landingpage.css';
 
 const LandingPage = () => {
@@ -10,29 +11,24 @@ const LandingPage = () => {
             <Navbar />
             
             {/* Hero Section */}
-            <section className="hero-section">
-                {/* Decorative diamond elements */}
-                <div className="diamond-1"></div>
-                <div className="diamond-2"></div>
-                
+            <section
+                className="hero-section"
+                style={{ backgroundImage: `url(${Landingpageimage})` }}
+            >
+                <div className="overlay"></div>
+
                 <div className="hero-container">
-                    <div className="hero-content">
-                        <h1 className="hero-title">
-                          <span className="highlight"> Traditional</span> Marketing
-                           <span className="slow-text">is SLOOOOW</span>
-                        </h1>
-                        <p className="hero-subtitle">
-                            Voxa helps you reach more clients, book more meetings, and close more deals every month—without the grind of outdated strategies
-                        </p>
-                        <div className="hero-buttons">
-                            <button className="btn-primary">Get Started Today</button>
-                        </div>
+                <div className="hero-content">
+                    <h1 className="hero-title">
+                    <span className="highlight">Traditional</span> Marketing <br /> is SLOOOOW
+                    </h1>
+                    <p className="hero-subtitle">
+                    Voxa helps you reach more clients, book more meetings, and close more deals every month—without the grind of outdated strategies.
+                    </p>
+                    <div className="hero-buttons">
+                    <button className="btn-primary">Get a Free Consultation</button>
                     </div>
-                    <div className="hero-visual">
-                        <div className="chart-container">
-                            <img src={Boredperson} alt="Person looking bored at work"/>
-                        </div>
-                    </div>
+                </div>
                 </div>
             </section>
 
