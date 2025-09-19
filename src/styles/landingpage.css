@@ -24,7 +24,8 @@
     line-height: 1.6;
     color: #333;
     overflow-x: hidden;
-    background: #FBF3D5;
+    /* background: #FBF3D5; */
+    background: #FBFFE4;
 }
 
 /* Hero section */
@@ -144,7 +145,9 @@
 /* Services Section */
 .services-section {
     padding: 100px 20px;
-    background: white;
+    /* background: white; */
+    /* background: #FBF3D5; */
+    background: #FBFFE4;
 }
 
 .services-container {
@@ -314,6 +317,162 @@
     color: #64748b;
     font-size: 0.85rem;
 }
+
+/* Pricing Section */
+.pricing-section {
+  background: #0f172a;
+  color: white;
+  padding: 100px 20px;
+  text-align: center;
+}
+
+.pricing-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.pricing-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 16px;
+}
+
+.pricing-subtitle {
+  color: #94a3b8;
+  margin-bottom: 60px;
+  font-size: 1.1rem;
+}
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 32px;
+}
+
+.pricing-card {
+  background: #1e293b;
+  border-radius: 16px;
+  padding: 40px;
+  text-align: center;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.pricing-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+}
+
+.pricing-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 12px;
+}
+
+.price {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+
+.price span {
+  font-size: 1rem;
+  color: #94a3b8;
+}
+
+.pricing-card ul {
+  list-style: none;
+  margin-bottom: 24px;
+  text-align: left;
+}
+
+.pricing-card ul li {
+  margin-bottom: 12px;
+  color: #e2e8f0;
+}
+
+.pricing-card .btn-secondary {
+  background: #334155;
+  color: white;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.pricing-card .btn-secondary:hover {
+  background: #475569;
+}
+
+.pricing-card.popular {
+  border: 2px solid #7c3aed;
+  background: linear-gradient(145deg, #1e1b4b, #312e81);
+}
+
+.badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #7c3aed;
+  color: white;
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-radius: 20px;
+}
+
+/* FAQ Section */
+.faq-section {
+  background: #0f172a;
+  color: white;
+  padding: 100px 20px;
+}
+
+.faq-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.faq-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.faq-item {
+  border-bottom: 1px solid #334155;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+}
+
+.faq-question {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.faq-answer {
+  margin-top: 12px;
+  color: #cbd5e1;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  display: none;
+}
+
+.faq-item.active .faq-answer {
+  display: block;
+}
+
 
 /* CTA Section */
 .cta-section {

@@ -26,7 +26,7 @@ const LandingPage = () => {
                     Voxa helps you reach more clients, book more meetings, and close more deals every month—without the grind of outdated strategies.
                     </p>
                     <div className="hero-buttons">
-                    <button className="btn-primary">Get a Free Consultation</button>
+                    <button className="btn-primary">Get Started</button>
                     </div>
                 </div>
                 </div>
@@ -149,6 +149,91 @@ const LandingPage = () => {
                     </div>
                 </div>
             </section>
+
+            {/* Pricing Section */}
+            <section className="pricing-section">
+            <div className="pricing-container">
+                <h2 className="pricing-title">Find the perfect plan for your business</h2>
+                <p className="pricing-subtitle">
+                Choose the plan that’s right for your business
+                </p>
+                {/* <p className="pricing-subtitle">
+                Choose the plan that’s right for your business. All plans come with a 14-day free trial.
+                </p> */}
+
+                <div className="pricing-grid">
+                {/* Basic Plan */}
+                <div className="pricing-card">
+                    <h3>Basic</h3>
+                    <p className="price">$99 <span>/month</span></p>
+                    <ul>
+                    <li>✔ Lead Generation</li>
+                    <li>✔ AI Marketing</li>
+                    <li>✔ Email Automation</li>
+                    </ul>
+                    <button className="btn-secondary">Get Started</button>
+                </div>
+
+                {/* Pro Plan */}
+                <div className="pricing-card popular">
+                    <div className="badge">Most Popular</div>
+                    <h3>Pro</h3>
+                    <p className="price">$299 <span>/month</span></p>
+                    <ul>
+                    <li>✔ Everything in Basic</li>
+                    <li>✔ Dedicated Support</li>
+                    <li>✔ Advanced Analytics</li>
+                    </ul>
+                    <button className="btn-primary">Get Started</button>
+                </div>
+
+                {/* Enterprise Plan */}
+                <div className="pricing-card">
+                    <h3>Enterprise</h3>
+                    <p className="price">Custom</p>
+                    <ul>
+                    <li>✔ Everything in Pro</li>
+                    <li>✔ Custom Integrations</li>
+                    <li>✔ Personalized Solutions</li>
+                    </ul>
+                    <button className="btn-secondary">Contact Us</button>
+                </div>
+                </div>
+            </div>
+            </section>
+
+            {/* FAQ Section */}
+            <section className="faq-section">
+            <div className="faq-container">
+                <h2 className="faq-title">Frequently Asked Questions</h2>
+
+                <div className="faq-item">
+                <button className="faq-question">What is the difference between the plans?</button>
+                <div className="faq-answer">
+                    <p>
+                    The Basic plan is designed for startups, offering lead generation and AI marketing tools.  
+                    The Pro plan is for growing businesses, with added support and analytics.  
+                    The Enterprise plan is for large organizations with tailored solutions.
+                    </p>
+                </div>
+                </div>
+
+                <div className="faq-item">
+                <button className="faq-question">Can I upgrade or downgrade my plan?</button>
+                <div className="faq-answer">
+                    <p>Yes, you can change your plan anytime inside your account settings.</p>
+                </div>
+                </div>
+
+                <div className="faq-item">
+                <button className="faq-question">What payment methods do you accept?</button>
+                <div className="faq-answer">
+                    <p>We accept all major credit cards, PayPal, and wire transfers for Enterprise customers.</p>
+                </div>
+                </div>
+            </div>
+            </section>
+
 
             {/* CTA Section */}
             <section className="cta-section">
