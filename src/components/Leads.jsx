@@ -68,7 +68,7 @@ const Leads = () => {
               <tr>
                 <th>Name</th>
                 <th><Briefcase size={16} /> Title</th>
-                <th>Seniority</th>
+                {/* <th>Seniority</th> */}
                 <th><MapPin size={16} /> Location</th>
                 <th><Globe size={16} /> Industry</th>
                 <th>Website</th>
@@ -79,7 +79,7 @@ const Leads = () => {
                 <tr key={lead.id}>
                   <td className="lead-name">{lead.name || "—"}</td>
                   <td>{lead.title || "—"}</td>
-                  <td>{lead.seniority || "—"}</td>
+                  {/* <td>{lead.seniority || "—"}</td> */}
                   <td>
                     {[lead.city, lead.state, lead.country].filter(Boolean).join(", ") || "—"}
                   </td>

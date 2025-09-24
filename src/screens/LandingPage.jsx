@@ -16,19 +16,18 @@ const LandingPage = () => {
                 style={{ backgroundImage: `url(${Landingpageimage})` }}
             >
                 <div className="overlay"></div>
-
                 <div className="hero-container">
-                <div className="hero-content">
-                    <h1 className="hero-title">
-                    <span className="highlight">Traditional</span> Marketing <br /> is SLOOOOW
-                    </h1>
-                    <p className="hero-subtitle">
-                    Voxa helps you reach more clients, book more meetings, and close more deals every month—without the grind of outdated strategies.
-                    </p>
-                    <div className="hero-buttons">
-                    <button className="btn-primary">Get Started</button>
+                    <div className="hero-content">
+                        <h1 className="hero-title">
+                            <span className="highlight">Traditional</span> Marketing <br /> is SLOOOOW
+                        </h1>
+                        <p className="hero-subtitle">
+                        Voxa helps you reach more clients, book more meetings, and close more deals every month—without the grind of outdated strategies.
+                        </p>
+                        <div className="hero-buttons">
+                            <button className="btn-primary">Get Started</button>
+                        </div>
                     </div>
-                </div>
                 </div>
             </section>
 

@@ -2,7 +2,7 @@ import { useState } from "react";
 import "../../styles/Message.css";
 import useStore from "../../useStore";
 import { supabase } from "../../supabaseClient";
-import { Loader2, Save, Wand2, Edit3,Check, X } from "lucide-react";
+import { Loader2, Save, Wand2, Edit3,Check, X, FileText } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeading } from "@fortawesome/free-solid-svg-icons";
 
@@ -12,6 +12,9 @@ const Subject = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
+
+  // New: manual input mode
+  const [mode, setMode] = useState("ai"); // "ai" | "manual"
 
   // Edit state
   const [isEditing, setIsEditing] = useState(false);
@@ -126,29 +129,61 @@ const Subject = () => {
         <FontAwesomeIcon icon={faHeading} /> Email Subject Line
       </h2>
 
-      <textarea
-        className="message-textarea"
-        rows={3}
-        placeholder="Write your prompt for the subject line..."
-        value={prompt}
-        onChange={(e) => setPrompt(e.target.value)}
-      />
+      {/* Mode Toggle */}
+      <div className="mode-toggle">
+        <button
+          className={`toggle-btn ${mode === "ai" ? "active" : ""}`}
+          onClick={() => setMode("ai")}
+        >
+          <Wand2 size={16} /> Use AI
+        </button>
+        <button
+          className={`toggle-btn ${mode === "manual" ? "active" : ""}`}
+          onClick={() => setMode("manual")}
+        >
+          <FileText size={16} /> My Own Template
+        </button>
+      </div>
 
-      <button
-        onClick={handleGenerate}
-        disabled={loading || !prompt.trim()}
-        className="button button-generate"
-      >
-        {loading ? (
-          <>
-            <Loader2 className="animate-spin" size={18} /> Generating...
-          </>
-        ) : (
-          <>
-            <Wand2 size={18} /> Generate Subject
-          </>
-        )}
-      </button>
+      {mode === "ai" && (
+        <>
+          <textarea
+            className="message-textarea"
+            rows={3}
+            placeholder="Write your prompt for the subject line..."
+            value={prompt}
+            onChange={(e) => setPrompt(e.target.value)}
+          />
+
+          <button
+            onClick={handleGenerate}
+            disabled={loading || !prompt.trim()}
+            className="button button-generate"
+          >
+            {loading ? (
+              <>
+                <Loader2 className="animate-spin" size={18} /> Generating...
+              </>
+            ) : (
+              <>
+                <Wand2 size={18} /> Generate Subject
+              </>
+            )}
+          </button>
+        </>
+      )}
+
+      {mode === "manual" && (
+        <>
+          <textarea
+            className="message-textarea"
+            rows={4}
+            placeholder="Paste or type your own email body here..."
+            value={subject}
+            onChange={(e) => setSubject(e.target.value)}
+          />
+        </>
+      )}
 
       {error && <p className="message-error">{error}</p>}
 
@@ -157,8 +192,9 @@ const Subject = () => {
           <h3>Generated Subject Line:</h3>
           {isEditing ? (
             <div className="edit-container">
-              <input
+              <textarea
                 type="text"
+                rows={4}
                 className="edit-input"
                 value={editedSubject}
                 onChange={(e) => setEditedSubject(e.target.value)}

@@ -21,7 +21,7 @@ const Navbar = () => {
       </button> */}
 
       <div className='nav-links'>
-        <a href="/home" className="nav-link" >Home</a>
+        <a href="/" className="nav-link" >Home</a>
         <a href="/#" className="nav-link">Pricing</a>
         <a href="/#" className="nav-link">Contact</a>
         <a href="/auth" className="nav-link">Get Started</a>

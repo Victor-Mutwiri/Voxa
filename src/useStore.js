@@ -70,7 +70,7 @@ const useStore = create(
             .from("templates")
             .select("*")
             .eq("user_id", userId)
-            .eq("type", "EmailSubject")
+            .eq("type", "Subject")
             .order("created_at", { ascending: false });
 
           if (error) throw error;
@@ -108,9 +108,7 @@ const useStore = create(
             });
           } else if (type === "EmailSubject") {
             set({
-              emailSubjects: get().emailSubjects.filter(
-                (t) => t.id !== templateId
-              ),
+              emailSubjects: get().emailSubjects.filter((t) => t.id !== templateId),
             });
           }
         } catch (err) {

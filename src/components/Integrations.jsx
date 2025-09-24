@@ -48,7 +48,7 @@ const Integrations = () => {
       <div className="integration-card">
         <h2>Email SMTP Setup</h2>
         <p className="intro">
-          Enter your email provider’s SMTP details below. These credentials allow our platform
+          Enter your business email provider’s SMTP details below. These credentials allow our platform
           to send emails campaigns on your behalf through <strong>Voxa</strong>.  
           If you’re unsure, check your email provider’s documentation for SMTP settings.
         </p>
@@ -57,7 +57,7 @@ const Integrations = () => {
           {/* Email */}
           <div className="form-group">
             <label>
-              <FontAwesomeIcon icon={faEnvelope} /> Email Address
+              <FontAwesomeIcon icon={faEnvelope} /> Business Email Address
               <FontAwesomeIcon icon={faInfoCircle} className="info-icon" title="The email address you want to send cold emails from." />
             </label>
             <input type="email" name="email" value={formData.email} onChange={handleChange} required />

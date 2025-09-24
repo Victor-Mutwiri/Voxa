@@ -2,7 +2,7 @@ import { useState } from "react";
 import "../../styles/Message.css";
 import useStore from "../../useStore";
 import { supabase } from "../../supabaseClient";
-import { Loader2, Save, Wand2, Edit3,Check, X } from "lucide-react"; // lucide icons
+import { Loader2, Save, Wand2, Edit3,Check, X, FileText } from "lucide-react"; // lucide icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelopeOpenText } from "@fortawesome/free-solid-svg-icons";
 
@@ -12,6 +12,9 @@ const Message = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
+
+  // New: manual input mode
+  const [mode, setMode] = useState("ai"); // "ai" | "manual"
 
   // Edit state
     const [isEditing, setIsEditing] = useState(false);
@@ -123,31 +126,63 @@ const Message = () => {
         <FontAwesomeIcon icon={faEnvelopeOpenText} /> Email Message
       </h2>
 
-      {/* Prompt input */}
-      <textarea
-        className="message-textarea"
-        rows={4}
-        placeholder="Write your prompt for the AI..."
-        value={prompt}
-        onChange={(e) => setPrompt(e.target.value)}
-      />
+      {/* Mode Toggle */}
+      <div className="mode-toggle">
+        <button
+          className={`toggle-btn ${mode === "ai" ? "active" : ""}`}
+          onClick={() => setMode("ai")}
+        >
+          <Wand2 size={16} /> Use AI
+        </button>
+        <button
+          className={`toggle-btn ${mode === "manual" ? "active" : ""}`}
+          onClick={() => setMode("manual")}
+        >
+          <FileText size={16} /> My Own Template
+        </button>
+      </div>
 
-      {/* Generate button */}
-      <button
-        onClick={handleGenerate}
-        disabled={loading || !prompt.trim()}
-        className="button button-generate"
-      >
-        {loading ? (
-          <>
-            <Loader2 className="animate-spin" size={18} /> Generating...
-          </>
-        ) : (
-          <>
-            <Wand2 size={18} /> Generate Email
-          </>
-        )}
-      </button>
+      {mode === "ai" && (
+        <>
+          {/* Prompt input */}
+          <textarea
+            className="message-textarea"
+            rows={4}
+            placeholder="Write your prompt for the AI..."
+            value={prompt}
+            onChange={(e) => setPrompt(e.target.value)}
+          />
+
+          {/* Generate button */}
+          <button
+            onClick={handleGenerate}
+            disabled={loading || !prompt.trim()}
+            className="button button-generate"
+          >
+            {loading ? (
+              <>
+                <Loader2 className="animate-spin" size={18} /> Generating...
+              </>
+            ) : (
+              <>
+                <Wand2 size={18} /> Generate Email
+              </>
+            )}
+          </button>
+        </>
+      )}
+
+      {mode === "manual" && (
+        <>
+          <textarea
+            className="message-textarea"
+            rows={4}
+            placeholder="Paste or type your own email body here..."
+            value={emailBody}
+            onChange={(e) => setEmailBody(e.target.value)}
+          />
+        </>
+      )}
 
       {/* Error message */}
       {error && <p className="message-error">{error}</p>}
