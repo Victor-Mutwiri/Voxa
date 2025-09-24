@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Navigate } from 'react-router';
 import { supabase } from '../supabaseClient';
 
-const AuthProtectedRoute = ({ children }) => {
+const AdminAuthProtectedRoute = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [session, setSession] = useState(null);
 
@@ -22,11 +22,10 @@ const AuthProtectedRoute = ({ children }) => {
 
   // If user is authenticated, redirect to home
   if (session) {
-    /* return <Navigate to="/home" replace />; */
-    return <Navigate to="/Dashboard" replace />;
+    return <Navigate to="/adminauth" replace />;
   }
 
   return children;
 };
 
-export default AuthProtectedRoute;
+export default AdminAuthProtectedRoute;

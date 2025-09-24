@@ -222,18 +222,18 @@ const Subject = () => {
       )}
       {/* Modal */}
         {showModal && (
-            <div className="modal-overlay">
-            <div className="modal">
-                <div className="modal-header">
+            <div className="save-modal-overlay">
+            <div className="save-modal">
+                <div className="save-modal-header">
                 <h3>Confirm Save</h3>
                 <button
                     onClick={() => setShowModal(false)}
-                    className="modal-close"
+                    className="save-modal-close"
                 >
                     <X size={20} />
                 </button>
                 </div>
-                <div className="modal-body">
+                <div className="save-modal-body">
                 <h4>Here’s the Subject you are about to save:</h4>
                 <div className="modal-preview">
                     <p>{subject}</p>
@@ -243,7 +243,7 @@ const Subject = () => {
                     saving. Saved templates will be reusable in future emails.
                 </p>
                 </div>
-                <div className="modal-footer">
+                <div className="save-modal-footer">
                 <button
                     onClick={() => setShowModal(false)}
                     className="button button-cancel"

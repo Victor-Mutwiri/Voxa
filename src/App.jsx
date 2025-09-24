@@ -1,13 +1,17 @@
 
 import { BrowserRouter, Routes, Route, Navigate } from "react-router";
 import './App.css'
-import ProtectedRoute from './components/ProtectedRoute'
+import AdminProtectedRoute from "./components/AdminProtectedRoute";
+import UserProtectedRoute from './components/UserProtectedRoute'
 import AuthProtectedRoute from './components/AuthProtectedRoute'
+import AdminAuthProtectedRoute from "./components/AdminAuthProtectedRoute";
 import OnboardingProtectedRoute from './components/OnboardingProtectedRoute'
 import Home from './screens/Home';
 import Auth from "./screens/Auth";
+import AdminAuth from "./screens/AdminAuth";
 import LandingPage from './screens/LandingPage';
 import Onboarding from "./screens/onboarding";
+import Dashboard from "./screens/Dashboard";
 
 function App() {
 
@@ -15,12 +19,20 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route 
+        <Route
           path="/home"
           element={
-            <ProtectedRoute>
+            <AdminProtectedRoute>
               <Home />
-            </ProtectedRoute>
+            </AdminProtectedRoute>
+          }
+        />
+        <Route 
+          path="/dashboard"
+          element={
+            <UserProtectedRoute>
+              <Dashboard />
+            </UserProtectedRoute>
           }
         />
         {/* <Route path="/home" element={<Home />} /> */}
@@ -30,6 +42,14 @@ function App() {
             <AuthProtectedRoute>
               <Auth />
             </AuthProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/adminauth" 
+          element={
+            <AdminAuthProtectedRoute>
+              <AdminAuth />
+            </AdminAuthProtectedRoute>
           } 
         />
         <Route

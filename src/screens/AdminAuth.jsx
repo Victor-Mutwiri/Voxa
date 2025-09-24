@@ -6,7 +6,7 @@ import Signup from "../components/Authentication/Signup";
 import Logo from '../assets/Voxa Logo.png'
 import "../styles/Auth.css";
 
-const Auth = () => {
+const AdminAuth = () => {
     const [activeTab, setActiveTab] = useState("login");
     const navigate = useNavigate();
 
@@ -18,7 +18,7 @@ const Auth = () => {
         <div className="auth-container">
             <div className="auth-card">
                 <div className="auth-header">
-                    <h1 className="auth-title">Welcome</h1>
+                    <h1 className="auth-title">Welcome Admin</h1>
                     {/* <h5>Logo</h5> */}
                     <a href="/">
                         <img src={Logo}  alt="Voxa Logo" className="auth-logo" />
@@ -38,12 +38,12 @@ const Auth = () => {
                     >
                         Login
                     </button>
-                    {/* <button 
+                    <button 
                         className={`tab-button ${activeTab === "signup" ? "active" : ""}`}
                         onClick={() => handleTabSwitch("signup")}
                     >
                         Sign Up
-                    </button> */}
+                    </button>
                 </div>
 
                 <div className="auth-content">
@@ -54,13 +54,13 @@ const Auth = () => {
                     <p>
                         {activeTab === "login" ? (
                             <>
-                                {/* Don't have an account?{" "}
+                                Don't have an account?{" "}
                                 <button 
                                     className="link-button"
                                     onClick={() => handleTabSwitch("signup")}
                                 >
                                     Sign up here
-                                </button> */}
+                                </button>
                             </>
                         ) : (
                             <>
@@ -80,4 +80,4 @@ const Auth = () => {
     );
 };
 
-export default Auth;
+export default AdminAuth;
