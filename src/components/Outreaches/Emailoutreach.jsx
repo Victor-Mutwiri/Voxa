@@ -21,9 +21,6 @@ const EmailOutreach = () => {
       <div className="email-panels">
         {/* Left Panel → Leads Table */}
         <div className="lead-table-panel">
-          {/* <h3 className="outreach-title">
-            <Mail size={20} color="#0a66c2" /> Email Outreach
-          </h3> */}
 
           {loading && <p className="status-msg">⏳ Loading leads...</p>}
           {error && <p className="status-msg error">❌ {error}</p>}

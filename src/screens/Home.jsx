@@ -7,6 +7,7 @@ import Templates from '../components/Templates';
 import Leads from '../components/Leads';
 import Integrations from '../components/Integrations';
 import Outreach from '../components/Outreach';
+import Campaign from '../components/Campaign';
 import Settingz from '../components/Settingz';
 import LogoutModal from '../components/Authentication/LogoutModal';
 import { 
@@ -16,7 +17,14 @@ import {
     LayoutDashboard,
     BookText,
     Users,
-    Settings
+    Settings,
+    Mail,
+    Megaphone,
+    LayoutTemplate,
+    Rocket,
+    // FileText,
+    // Send,
+    // Target,
 } from 'lucide-react';
 import Logo from '../assets/Voxa Logo.png'
 import '../styles/Home.css'
@@ -34,8 +42,9 @@ const Home = () => {
     const navigationItems = [
         { id: 'overview', label: 'Overview', icon: LayoutDashboard },
         { id: 'leads', label: 'Leads', icon: BookText },
-        { id: 'outreach', label: 'Outreach', icon: BookText },
-        { id: 'templates', label: 'Templates', icon: Users },
+        { id: 'outreach', label: 'Outreach', icon: Rocket },
+        { id: 'campaign', label: 'Campaign', icon: Megaphone },
+        { id: 'templates', label: 'Templates', icon: LayoutTemplate },
         { id: 'integrations', label: 'Integrations', icon: Users },
         { id: 'settings', label: 'Settings', icon: Settings },
     ];
@@ -48,6 +57,8 @@ const Home = () => {
             return <Leads />;
         case 'outreach':
             return <Outreach />;
+        case 'campaign':
+            return <Campaign />;
         case 'templates':
             return <Templates />;
         case 'integrations':

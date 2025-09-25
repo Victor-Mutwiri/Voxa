@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { supabase } from '../supabaseClient';
 import { useNavigate } from "react-router";
-import Login from "../components/Authentication/Login";
+import AdminLogin from "../components/Authentication/AdminLogin";
 import Signup from "../components/Authentication/Signup";
 import Logo from '../assets/Voxa Logo.png'
 import "../styles/Auth.css";
@@ -47,7 +47,7 @@ const AdminAuth = () => {
                 </div>
 
                 <div className="auth-content">
-                    {activeTab === "login" ? <Login /> : <Signup />}
+                    {activeTab === "login" ? <AdminLogin /> : <Signup />}
                 </div>
 
                 <div className="auth-footer">

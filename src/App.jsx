@@ -11,7 +11,7 @@ import Auth from "./screens/Auth";
 import AdminAuth from "./screens/AdminAuth";
 import LandingPage from './screens/LandingPage';
 import Onboarding from "./screens/onboarding";
-import Dashboard from "./screens/Dashboard";
+import UserDashboard from "./screens/UserDashboard";
 
 function App() {
 
@@ -31,7 +31,7 @@ function App() {
           path="/dashboard"
           element={
             <UserProtectedRoute>
-              <Dashboard />
+              <UserDashboard />
             </UserProtectedRoute>
           }
         />

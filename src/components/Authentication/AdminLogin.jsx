@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 import { supabase } from "../../supabaseClient";
 import useStore from "../../useStore";
 
-const Login = () => {
+const AdminLogin = () => {
     const navigate = useNavigate();
     const setUserId = useStore(state => state.setUserId);
     const [formData, setFormData] = useState({
@@ -40,7 +40,7 @@ const Login = () => {
                 localStorage.setItem('user', JSON.stringify(data.user));
                 localStorage.setItem('userId', userId);
                 setUserId(userId); // Set user ID in store
-                navigate('/dashboard');
+                navigate('/home');
             }
         } catch (err) {
             setError("An unexpected error occurred");
@@ -107,4 +107,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default AdminLogin;

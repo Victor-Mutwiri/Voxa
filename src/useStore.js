@@ -9,6 +9,7 @@ const useStore = create(
       leads: [],
       emailBodies: [],
       emailSubjects: [],
+      campaigns: [],
       activeEmailSubject: null,
       activeEmailBody: null,
       loading: false,
@@ -16,6 +17,63 @@ const useStore = create(
       userId: null,
 
       setUserId: (id) => set({ userId: id }),
+
+      fetchCampaigns: async () => {
+        set({ loading: true, error: null });
+        try {
+          const userId = get().userId;
+          if (!userId) throw new Error("No user found");
+
+          const { data, error } = await supabase
+            .from("campaign") // ✅ make sure your table is `campaigns` plural
+            .select("*")
+            .eq("user_id", userId)
+            .order("created_at", { ascending: false });
+
+          if (error) throw error;
+          set({ campaigns: data });
+        } catch (err) {
+          set({ error: err.message });
+        } finally {
+          set({ loading: false });
+        }
+      },
+
+      // CREATE CAMPAIGN
+      createCampaign: async (name) => {
+        try {
+          const userId = get().userId;
+          if (!userId) throw new Error("No user found");
+
+          const { data, error } = await supabase
+            .from("campaign")
+            .insert([{ name, user_id: userId }])
+            .select();
+
+          if (error) throw error;
+
+          // Prepend new campaign
+          set({ campaigns: [data[0], ...get().campaigns] });
+          return data[0];
+        } catch (err) {
+          set({ error: err.message });
+          throw err;
+        }
+      },
+
+      // DELETE CAMPAIGN
+      deleteCampaign: async (id) => {
+        try {
+          const { error } = await supabase.from("campaign").delete().eq("id", id);
+          if (error) throw error;
+
+          set({
+            campaigns: get().campaigns.filter((c) => c.id !== id),
+          });
+        } catch (err) {
+          set({ error: err.message });
+        }
+      },
 
       fetchLeads: async () => {
         set({ loading: true, error: null });
@@ -122,6 +180,7 @@ const useStore = create(
           leads: [],
           emailBodies: [],
           emailSubjects: [],
+          campaigns: [],
           activeEmailSubject: null,
           activeEmailBody: null,
           loading: false,
