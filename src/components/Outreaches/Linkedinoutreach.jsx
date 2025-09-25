@@ -22,7 +22,7 @@ const LinkedinOutreach = () => {
         <Linkedin size={22} color="#0a66c2" /> LinkedIn Outreach
       </h3> */}
 
-      {loading && <p className="status-msg">⏳ Loading leads...</p>}
+      {/* {loading && <p className="status-msg">⏳</p>} */}
       {error && <p className="status-msg error">❌ {error}</p>}
 
       {!loading && validLeads.length === 0 && (

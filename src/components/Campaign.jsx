@@ -63,7 +63,7 @@ const Campaign = () => {
 
       {/* Campaign List */}
       {loading ? (
-        <p className="loading-msg">Loading campaigns...</p>
+        <p className="loading-msg"></p>
       ) : campaigns.length === 0 ? (
         <p className="empty-msg">No campaigns yet. Create one above 👆</p>
       ) : (
