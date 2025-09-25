@@ -16,7 +16,7 @@ import '../styles/UserDashboard.css';
 
 const UserDashboard = () => {
   return (
-    <div className="dashboard">
+    <div className="userdashboard">
       {/* Sidebar */}
       <aside className="sidebar">
         <div className="logo">

@@ -5,8 +5,10 @@ import { Briefcase, Building2, Globe, Mail } from "lucide-react";
 import EmailPreview from "./EmailPreview";
 
 const EmailOutreach = () => {
-  const { leads, fetchLeads, loading, error, userId } = useStore();
+  const { leads, fetchLeads, loading, error, userId, activeCampaign } = useStore();
   const [selectedLead, setSelectedLead] = useState(null);
+
+  const Campaign = activeCampaign ? activeCampaign.name : "No campaign selected";
 
   useEffect(() => {
     if (userId) {
@@ -21,6 +23,7 @@ const EmailOutreach = () => {
       <div className="email-panels">
         {/* Left Panel → Leads Table */}
         <div className="lead-table-panel">
+          <h4>Current Campaign: {Campaign}</h4>
 
           {loading && <p className="status-msg">⏳ Loading leads...</p>}
           {error && <p className="status-msg error">❌ {error}</p>}

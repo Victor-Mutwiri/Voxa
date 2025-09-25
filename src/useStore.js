@@ -12,6 +12,7 @@ const useStore = create(
       campaigns: [],
       activeEmailSubject: null,
       activeEmailBody: null,
+      activeCampaign: null,
       loading: false,
       error: null,
       userId: null,
@@ -140,10 +141,16 @@ const useStore = create(
         }
       },
 
+      // Set Active Campaign
+      setActiveCampaign: (campaign) => {
+        set({ activeCampaign: campaign });
+      },
+
       // Set Active Email Body
       setActiveEmailBody: (template) => {
         set({ activeEmailBody: template });
       },
+
       // Set Active Email Body
       setActiveEmailSubject: (template) => {
         set({ activeEmailSubject: template });
@@ -183,6 +190,7 @@ const useStore = create(
           campaigns: [],
           activeEmailSubject: null,
           activeEmailBody: null,
+          activeCampaign: null,
           loading: false,
           error: null,
           userId: null }),

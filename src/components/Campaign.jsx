@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { Loader2 } from "lucide-react";
+import { Loader2, CheckCircle } from "lucide-react";
 import useStore from "../useStore";
 import "../styles/Campaigns.css";
 
@@ -13,7 +13,9 @@ const Campaign = () => {
     deleteCampaign,
     userId,
     loading,
-  } = useStore();
+    activeCampaign,
+    setActiveCampaign,
+  } = useStore()
 
   const [newCampaign, setNewCampaign] = useState("");
   const [creating, setCreating] = useState(false);
@@ -69,6 +71,12 @@ const Campaign = () => {
           {campaigns.map((c) => (
             <li key={c.id} className="campaign-item">
               <span className="campaign-name">{c.name}</span>
+              <button onClick={() => setActiveCampaign(c)}>
+                <CheckCircle
+                className={activeCampaign?.id === c.id ? "active" : ""}
+                />
+                Set Active
+                </button>
               <button
                 className="delete-btn"
                 onClick={() => deleteCampaign(c.id)}
