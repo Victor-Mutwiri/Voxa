@@ -37,22 +37,6 @@
   color: inherit;
 }
 
-/* .nav-logo {
-  width: 32px;
-  height: 32px;
-  background: #9333ea;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-} */
-
-/* .nav-logo-icon {
-  width: 20px;
-  height: 20px;
-  color: #fff;
-} */
-
 .nav-title {
   color: #000;
   /* color: #fff; */
@@ -62,7 +46,8 @@
 
 .nav-items {
   flex: 1;
-  padding: 24px 16px;
+  padding: 15px 16px;
+  /* padding: 24px 16px; */
   display: flex;
   flex-direction: column;
   gap: 8px;

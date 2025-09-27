@@ -5,7 +5,7 @@ import "../../styles/Outreach.css";
 import useStore from "../../useStore";
 
 const EmailPreview = ({ lead }) => {
-  const { activeEmailSubject, activeEmailBody, userId} = useStore();
+  const { activeEmailSubject, activeEmailBody, userId, activeCampaign} = useStore();
   const [status, setStatus] = useState(null);
 
   if (!lead) {
@@ -18,15 +18,29 @@ const EmailPreview = ({ lead }) => {
 
   const subjectLine = activeEmailSubject?.trim();
   const bodyContent = activeEmailBody?.trim();
+  const activeCampaignId = activeCampaign ? activeCampaign.id : null;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // ✅ Prevent sending without selecting a campaign
+    if (!activeCampaignId) {
+      setStatus("❌ Please select a campaign before sending.");
+      return;
+    }
+
     setStatus("📤 Sending...");
+
+    const outreachLogging = {
+      user_id: userId,
+      lead_id: lead.id,
+      campaign_id: activeCampaignId,
+    };
 
     // Build the payload that n8n will receive
     const formData = {
         user_id: userId,
         to: lead.email,
+        icebreaker: lead.icebreaker || "",
         name: lead.name,
         subject: subjectLine || "No subject",
         body: bodyContent || "No body content",
@@ -67,14 +81,22 @@ const EmailPreview = ({ lead }) => {
       <div className="email-body">
         <h5> Hi {lead.name},</h5>
         {bodyContent ? (
-          <p>{bodyContent}</p>
+          <>
+            <p>{lead.icebreaker}</p>
+            <p>{bodyContent}</p>
+          </>
+          
         ) : (
           <p className="placeholder">No email body selected</p>
         )}
       </div>
 
       <div className="email-footer">
-        <button className="send-btn" onClick={handleSubmit}>
+        <button
+          className={`send-btn ${!activeCampaignId ? "disabled" : ""}`}
+          onClick={handleSubmit}
+          disabled={!activeCampaignId}
+        >
           <Send size={16} />
           Send
         </button>

@@ -40,9 +40,9 @@
 }
 
 /* Content */
-.outreach-content {
-  padding: 1rem;
-}
+/* .outreach-content {
+  padding: 0.2rem;
+} */
 
 /* Email form */
 .email-form {
@@ -129,7 +129,8 @@
 
 .lead-table th, 
 .lead-table td {
-  padding: 0.9rem 1rem;
+  padding: 0.2rem 0.5rem;
+  /* padding: 0.9rem 1rem; */
   text-align: left;
   font-size: 0.95rem;
 }

@@ -17,6 +17,16 @@ const useStore = create(
       error: null,
       userId: null,
 
+      filters: {
+        campaignId: null,
+        stepNumber: null,
+      },
+
+      setFilter: (key, value) => 
+        set((state) => ({
+          filters: { ...state.filters, [key]: value }
+        })),
+
       setUserId: (id) => set({ userId: id }),
 
       fetchCampaigns: async () => {
@@ -79,23 +89,52 @@ const useStore = create(
       fetchLeads: async () => {
         set({ loading: true, error: null });
         try {
-          const userId = get().userId; // Get userId from store
+          const userId = get().userId;
           if (!userId) throw new Error("No user found");
 
           const { data, error } = await supabase
             .from("extracted_leads")
-            .select("*")
-            .eq("user_id", userId)
-            .order("created_at", { ascending: false });
+            .select(`
+              *,
+              outreach_logs!left (
+                step_number,
+                campaign_id
+              )
+            `)
+            .eq("user_id", userId);
 
           if (error) throw error;
-          set({ leads: data });
+
+          // 👉 Process outreach_logs to find latest step_number per lead
+          const processedLeads = data.map((lead) => {
+            const logs = lead.outreach_logs || [];
+            let current_step = 0;
+            let current_campaign_id = null;
+
+            if (logs.length > 0) {
+              // Get max step_number (latest)
+              const latestLog = logs.reduce((a, b) => 
+                a.step_number > b.step_number ? a : b
+              );
+              current_step = latestLog.step_number;
+              current_campaign_id = latestLog.campaign_id;
+            }
+
+            return {
+              ...lead,
+              current_step,
+              current_campaign_id,
+            };
+          });
+
+          set({ leads: processedLeads });
         } catch (err) {
           set({ error: err.message });
         } finally {
           set({ loading: false });
         }
       },
+
 
       fetchEmailBodies: async () => {
         set({ loading: true, error: null });
