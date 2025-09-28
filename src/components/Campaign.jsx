@@ -15,7 +15,7 @@ const Campaign = () => {
     loading,
     activeCampaign,
     setActiveCampaign,
-  } = useStore()
+  } = useStore();
 
   const [newCampaign, setNewCampaign] = useState("");
   const [creating, setCreating] = useState(false);
@@ -46,6 +46,18 @@ const Campaign = () => {
     <div className="campaigns-container">
       <h2 className="title">📊 Campaigns</h2>
 
+      {/* Stats bar */}
+      <div className="stats-bar">
+        <div className="stat-box">
+          <span className="stat-number">{campaigns.length}</span>
+          <span className="stat-label">Total</span>
+        </div>
+        <div className="stat-box">
+          <span className="stat-number">{activeCampaign ? 1 : 0}</span>
+          <span className="stat-label">Active</span>
+        </div>
+      </div>
+
       {/* Create Campaign */}
       <form onSubmit={handleCreate} className="campaign-form">
         <input
@@ -63,28 +75,44 @@ const Campaign = () => {
 
       {/* Campaign List */}
       {loading ? (
-        <p className="loading-msg"></p>
+        <p className="loading-msg">Loading campaigns...</p>
       ) : campaigns.length === 0 ? (
         <p className="empty-msg">No campaigns yet. Create one above 👆</p>
       ) : (
         <ul className="campaign-list">
-          {campaigns.map((c) => (
-            <li key={c.id} className="campaign-item">
-              <span className="campaign-name">{c.name}</span>
-              <button onClick={() => setActiveCampaign(c)}>
-                <CheckCircle
-                className={activeCampaign?.id === c.id ? "active" : ""}
-                />
-                Set Active
-                </button>
-              <button
-                className="delete-btn"
-                onClick={() => deleteCampaign(c.id)}
+          {campaigns.map((c) => {
+            const isActive = activeCampaign?.id === c.id;
+            return (
+              <li
+                key={c.id}
+                className={`campaign-item ${isActive ? "active-campaign" : ""}`}
               >
-                <FontAwesomeIcon icon={faTrash} />
-              </button>
-            </li>
-          ))}
+                <div className="campaign-left">
+                  <span className="campaign-name">{c.name}</span>
+                  {isActive && <span className="active-badge">Active</span>}
+                </div>
+                <div className="campaign-actions">
+                  <button
+                    className="set-active-btn"
+                    onClick={() => setActiveCampaign(c)}
+                    disabled={isActive}
+                  >
+                    <CheckCircle
+                      size={18}
+                      className={`check-icon ${isActive ? "checked" : ""}`}
+                    />
+                    {isActive ? "Active" : "Set Active"}
+                  </button>
+                  <button
+                    className="delete-btn"
+                    onClick={() => deleteCampaign(c.id)}
+                  >
+                    <FontAwesomeIcon icon={faTrash} />
+                  </button>
+                </div>
+              </li>
+            );
+          })}
         </ul>
       )}
     </div>
