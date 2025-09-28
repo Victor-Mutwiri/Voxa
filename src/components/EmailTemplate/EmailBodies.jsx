@@ -33,16 +33,25 @@ const EmailBodies = () => {
       ) : (
         <ul className="template-list">
           {emailBodies.map((body) => (
-            <li key={body.id} className="template-item">
-              <p>{body.template}</p>
+            <li
+              key={body.id}
+              className={`template-item ${
+                activeEmailBody === emailBodies.template ? "active-template" : ""
+              }`}
+            >
+              <p>
+                {body.template}
+                {activeEmailBody === body.template && (
+                  <span className="active-badge">Active</span>
+                )}
+              </p>
               <div className="template-actions">
-                <button onClick={() => setActiveEmailBody(body.template)}>
-                  <CheckCircle
-                    className={
-                      activeEmailBody === body.template ? "active" : ""
-                    }
-                  />
-                  Set Active
+                <button
+                  onClick={() => setActiveEmailBody(body.template)}
+                  disabled={activeEmailBody === body.template}
+                >
+                  <CheckCircle size={16} />
+                  {activeEmailBody === body.template ? "Active" : "Set Active"}
                 </button>
                 <button
                   onClick={() => {
@@ -50,7 +59,7 @@ const EmailBodies = () => {
                     setShowDeleteModal(true);
                   }}
                 >
-                  <Trash2 className="text-red-500" />
+                  <Trash2 size={16} />
                 </button>
               </div>
             </li>

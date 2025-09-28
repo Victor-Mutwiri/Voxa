@@ -14,7 +14,7 @@
   font-size: 1.125rem;
   font-weight: 600;
   color: #374151; /* gray-700 */
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
   text-align: center;
 }
 
@@ -25,65 +25,95 @@
   margin: 0;
   padding: 0;
   list-style: none;
-  max-height: 150px; /* keep list scrollable */
+  max-height: 180px;
   overflow-y: auto;
 }
 
 .template-item {
-  background: #f9fafb; /* light background */
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  padding: 0.75rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 12px 14px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: background 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .template-item:hover {
-  background: #f3f4f6;
+  background: #f1f5f9;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
 
 .template-item p {
   margin: 0;
   font-size: 0.95rem;
-  color: #374151;
+  color: #334155;
   flex: 1;
+  line-height: 1.4;
 }
 
-/* Actions row */
+/* Active highlight */
+.template-item.active-template {
+  border: 2px solid #2563eb;
+  background: #eff6ff;
+}
+
+.active-badge {
+  background: #2563eb;
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 999px;
+  margin-left: 8px;
+}
+
+/* Actions */
 .template-actions {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 8px;
 }
 
 .template-actions button {
   display: flex;
   align-items: center;
-  gap: 0.25rem;
-  font-size: 0.85rem;
-  background: none;
+  gap: 4px;
+  font-size: 0.8rem;
+  padding: 6px 10px;
+  border-radius: 6px;
   border: none;
   cursor: pointer;
-  color: #6b7280; /* gray-500 */
-  transition: color 0.2s ease;
+  transition: all 0.2s ease;
 }
 
-.template-actions button:hover {
-  color: #111827; /* darker gray */
+/* Set Active button */
+.template-actions button:first-child {
+  background: #e2e8f0;
+  color: #1e293b;
 }
 
-.template-actions .active {
-  color: #16a34a; /* green-600 */
+.template-actions button:first-child:hover {
+  background: #cbd5e1;
 }
 
-/* Delete button icon */
-.template-actions .text-red-500 {
-  transition: transform 0.2s ease;
+.template-actions button:disabled {
+  background: #2563eb;
+  color: #fff;
+  cursor: default;
 }
-.template-actions .text-red-500:hover {
-  transform: scale(1.15);
+
+/* Delete button */
+.template-actions button:last-child {
+  background: transparent;
+  color: #dc2626;
+}
+
+.template-actions button:last-child:hover {
+  color: #b91c1c;
+  transform: scale(1.05);
 }
 
 /* Email Preview Box */

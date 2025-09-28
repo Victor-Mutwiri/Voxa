@@ -34,16 +34,25 @@ const EmailSubjects = () => {
       ) : (
         <ul className="template-list">
           {emailSubjects.map((subject) => (
-            <li key={subject.id} className="template-item">
-              <p>{subject.template}</p>
+            <li
+              key={subject.id}
+              className={`template-item ${
+                activeEmailSubject === subject.template ? "active-template" : ""
+              }`}
+            >
+              <p>
+                {subject.template}
+                {activeEmailSubject === subject.template && (
+                  <span className="active-badge">Active</span>
+                )}
+              </p>
               <div className="template-actions">
-                <button onClick={() => setActiveEmailSubject(subject.template)}>
-                  <CheckCircle
-                    className={
-                      activeEmailSubject === subject.template ? "active" : ""
-                    }
-                  />
-                  Set Active
+                <button
+                  onClick={() => setActiveEmailSubject(subject.template)}
+                  disabled={activeEmailSubject === subject.template}
+                >
+                  <CheckCircle size={16} />
+                  {activeEmailSubject === subject.template ? "Active" : "Set Active"}
                 </button>
                 <button
                   onClick={() => {
@@ -51,7 +60,7 @@ const EmailSubjects = () => {
                     setShowDeleteModal(true);
                   }}
                 >
-                  <Trash2 className="text-red-500" />
+                  <Trash2 size={16} />
                 </button>
               </div>
             </li>
