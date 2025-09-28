@@ -135,3 +135,64 @@
   padding: 0.4rem 0;
   border-bottom: 1px solid #f3f4f6;
 }
+
+.linkedin-prospects {
+  margin-top: 2rem;
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.lead-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.lead-table th,
+.lead-table td {
+  padding: 0.8rem;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.lead-table th {
+  font-weight: bold;
+  color: #374151;
+}
+
+.connect-btn {
+  background: #0a66c2;
+  color: #fff;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: background 0.2s;
+}
+
+.connect-btn:hover {
+  background: #084d91;
+}
+.view-all-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.view-all-btn {
+  background: #2563eb;
+  color: #fff;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.view-all-btn:hover {
+  background: #1d4ed8;
+}
+
