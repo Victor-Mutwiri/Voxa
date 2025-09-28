@@ -46,8 +46,12 @@ const LandingPage = () => {
                     <div className="logo-item">ACME Inc.</div>
                     <div className="logo-item">TechFlow</div>
                     <div className="logo-item">GrowthHub</div>
+                    <div className="logo-item">Voltemad Wineries</div>
+                    <div className="logo-item">Jerry & Co Contractors</div>
                     <div className="logo-item">Quantum</div>
                     <div className="logo-item">Elevate</div>
+                    <div className="logo-item">ConnectPlus</div>
+                    <div className="logo-item">GrowthCorp</div>
                 </div>
             </section>
 

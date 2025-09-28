@@ -3,6 +3,16 @@ import { useState } from "react";
 import { Send } from "lucide-react";
 import "../../styles/Outreach.css";
 import useStore from "../../useStore";
+import { supabase } from "../../supabaseClient";
+
+
+const stepLabels = {
+  0: "Awaiting Cold Outreach",
+  1: "Cold Email Sent",
+  2: "Follow-up 1 Sent",
+  3: "Follow-up 2 Sent",
+  4: "Breakup Email Sent",
+};
 
 const EmailPreview = ({ lead }) => {
   const { activeEmailSubject, activeEmailBody, userId, activeCampaign} = useStore();
@@ -22,51 +32,85 @@ const EmailPreview = ({ lead }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // ✅ Prevent sending without selecting a campaign
+
     if (!activeCampaignId) {
       setStatus("❌ Please select a campaign before sending.");
       return;
     }
 
-    setStatus("📤 Sending...");
+    setStatus("⏳ Checking outreach history...");
 
-    const outreachLogging = {
-      user_id: userId,
-      lead_id: lead.id,
-      campaign_id: activeCampaignId,
-    };
+    try {
+      // 1️⃣ Fetch existing logs for this lead + campaign
+      const { data: logs, error: logsError } = await supabase
+        .from("outreach_logs")
+        .select("step_number")
+        .eq("lead_id", lead.id)
+        .eq("campaign_id", activeCampaignId)
+        .eq("user_id", userId);
 
-    // Build the payload that n8n will receive
-    const formData = {
+      if (logsError) throw logsError;
+
+      const sentSteps = logs.map((l) => l.step_number);
+
+      const nextStep = (lead.current_step ?? 0) + 1;
+
+      // 2️⃣ Rule checks with labels
+      if (sentSteps.includes(nextStep)) {
+        setStatus(
+          `⚠️ This step (${stepLabels[nextStep]}) has already been sent to this lead.`
+        );
+        return;
+      }
+
+      if (nextStep > 1 && !sentSteps.includes(nextStep - 1)) {
+        setStatus(
+          `⚠️ You must complete the previous step first: ${stepLabels[nextStep - 1]}.`
+        );
+        return;
+      }
+
+      setStatus("📤 Sending...");
+
+      // 3️⃣ Send email via webhook
+      const formData = {
         user_id: userId,
         to: lead.email,
         icebreaker: lead.icebreaker || "",
         name: lead.name,
         subject: subjectLine || "No subject",
         body: bodyContent || "No body content",
-    };
+      };
 
-    try {
       const res = await fetch("http://localhost:5678/webhook-test/sendmail", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
-      let message = "✅ Sent to webhook!";
-      try {
-        /* const data = await res.json(); */
-        message = `✅ Sent!`;
-      } catch {
-        message = "✅ Sent! (No JSON response)";
-      }
+      if (!res.ok) throw new Error("Failed to send email");
 
-      setStatus(message);
+      // 4️⃣ Log to outreach_logs ONLY if success
+      const { error: insertError } = await supabase
+        .from("outreach_logs")
+        .insert([
+          {
+            user_id: userId,
+            lead_id: lead.id,
+            campaign_id: activeCampaignId,
+            step_number: nextStep,
+          },
+        ]);
+
+      if (insertError) throw insertError;
+
+      setStatus(`✅ ${stepLabels[nextStep]} logged and email sent!`);
     } catch (err) {
       console.error(err);
       setStatus("❌ Error: " + err.message);
     }
   };
+
 
   return (
     <div className="email-preview">

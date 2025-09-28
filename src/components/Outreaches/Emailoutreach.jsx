@@ -76,40 +76,44 @@ const EmailOutreach = () => {
 
           {/* ✅ Filters UI */}
           <div className="filters">
-            {/* Campaign Filter */}
-            <select
-              value={filters.campaignId || ""}
-              onChange={(e) =>
-                setFilter("campaignId", e.target.value || null)
-              }
-            >
-              <option value="">All Leads</option>
-              {campaigns.map((c) => (
-                <option key={c.id} value={c.id}>
-                  {c.name}
-                </option>
-              ))}
-            </select>
+            <div className="filter-group">
+              <label>Campaign</label>
+              <select
+                value={filters.campaignId || ""}
+                onChange={(e) =>
+                  setFilter("campaignId", e.target.value || null)
+                }
+              >
+                <option value="">All Leads</option>
+                {campaigns.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.name}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-            {/* Step Filter */}
-            <select
-              value={filters.stepNumber ?? ""}
-              onChange={(e) =>
-                setFilter(
-                  "stepNumber",
-                  e.target.value ? Number(e.target.value) : null
-                )
-              }
-            >
-              <option value="">All Steps</option>
-              {Object.entries(stepLabels).map(([num, label]) => (
-                <option key={num} value={num}>
-                  {label}
-                </option>
-              ))}
-            </select>
-
+            <div className="filter-group">
+              <label>Step</label>
+              <select
+                value={filters.stepNumber ?? ""}
+                onChange={(e) =>
+                  setFilter(
+                    "stepNumber",
+                    e.target.value ? Number(e.target.value) : null
+                  )
+                }
+              >
+                <option value="">All Steps</option>
+                {Object.entries(stepLabels).map(([num, label]) => (
+                  <option key={num} value={num}>
+                    {label}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
+
 
           {/* Leads Table */}
           {validLeads.length > 0 && (
