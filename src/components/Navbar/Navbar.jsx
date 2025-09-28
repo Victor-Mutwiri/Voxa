@@ -1,30 +1,33 @@
-import { useState } from "react";
-import { useNavigate } from "react-router";
 import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
 import Logo from '../../assets/Voxa Logo.png';
 import "./Navbar.css";
 
 const Navbar = () => {
-  const navigate = useNavigate();
+
+  const handlePricingClick = (e) => {
+    e.preventDefault();
+    const pricingSection = document.querySelector('.pricing-section');
+    pricingSection?.scrollIntoView({ behavior: 'smooth' });
+  };
+  const handleContactClick = (e) => {
+    e.preventDefault();
+    const contactSection = document.querySelector('.cta-section');
+    contactSection?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   return (
     <nav className="navbar">
-      <div className="logo-container">
-        <a href="/">
+      <a href="/">
         <img src={Logo} alt="Voxa Logo" className="logo" />
-          {/* <img src={Logo} alt="Vimtec Logo" className="logo" /> */}
-        </a>
-      </div>
-
-      {/* <button >
-        <FontAwesomeIcon icon={menuOpen ? faTimes : faBars} />
-      </button> */}
-
+      </a>
+      
       <div className='nav-links'>
         <a href="/" className="nav-link" >Home</a>
-        <a href="/#" className="nav-link">Pricing</a>
-        <a href="/#" className="nav-link">Contact</a>
-        <a href="/dashboard" className="nav-link">Get Started</a>
+        <a href="/#pricing" className="nav-link" onClick={handlePricingClick}>Pricing</a>
+        <a href="/#contact" className="nav-link" onClick={handleContactClick}>Contact</a>
+        <div className="get-started-button">
+          <a href="/dashboard" className="nav-link">Login</a>
+        </div>
       </div>
     </nav>
   );

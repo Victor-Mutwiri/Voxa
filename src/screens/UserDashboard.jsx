@@ -19,7 +19,7 @@ const UserDashboard = () => {
     <div className="userdashboard">
       {/* Sidebar */}
       <aside className="sidebar">
-        <div className="logo">
+        <div className="userdashboard-logo">
             <a href="/">
                 <img src={Logo} alt="Voxa Logo" className="logo" />
             </a>

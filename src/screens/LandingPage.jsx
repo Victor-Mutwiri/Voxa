@@ -8,24 +8,29 @@ import '../styles/landingpage.css';
 const LandingPage = () => {
     return (
         <div className="landing-page">
-            <Navbar />
+            
             
             {/* Hero Section */}
             <section
                 className="hero-section"
                 style={{ backgroundImage: `url(${Landingpageimage})` }}
             >
-                <div className="overlay"></div>
-                <div className="hero-container">
-                    <div className="hero-content">
-                        <h1 className="hero-title">
-                            <span className="highlight">Traditional</span> Marketing <br /> is SLOOOOW
-                        </h1>
-                        <p className="hero-subtitle">
-                        Voxa helps you reach more clients, book more meetings, and close more deals every month—without the grind of outdated strategies.
-                        </p>
-                        <div className="hero-buttons">
-                            <button className="btn-primary">Get Started</button>
+                <div className="hero-navbar">
+                    <Navbar />
+                </div>   
+                <div className="landing-page-hero">
+                    <div className="overlay"></div>
+                    <div className="hero-container">
+                        <div className="hero-content">
+                            <h1 className="hero-title">
+                                <span className="highlight">Traditional</span> Marketing <br /> is SLOOOOW
+                            </h1>
+                            <p className="hero-subtitle">
+                            Voxa helps you reach more clients, book more meetings, and close more deals every month—without the grind of outdated strategies.
+                            </p>
+                            <div className="hero-buttons">
+                                <button className="btn-primary">Get Started</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -150,55 +155,55 @@ const LandingPage = () => {
             </section>
 
             {/* Pricing Section */}
-            <section className="pricing-section">
-            <div className="pricing-container">
-                <h2 className="pricing-title">Find the perfect plan for your business</h2>
-                <p className="pricing-subtitle">
-                Choose the plan that’s right for your business
-                </p>
-                {/* <p className="pricing-subtitle">
-                Choose the plan that’s right for your business. All plans come with a 14-day free trial.
-                </p> */}
+            <section className="pricing-section" id="pricing">
+                <div className="pricing-container">
+                    <h2 className="pricing-title">Find the perfect plan for your business</h2>
+                    <p className="pricing-subtitle">
+                    Choose the plan that’s right for your business
+                    </p>
+                    {/* <p className="pricing-subtitle">
+                    Choose the plan that’s right for your business. All plans come with a 14-day free trial.
+                    </p> */}
 
-                <div className="pricing-grid">
-                {/* Basic Plan */}
-                <div className="pricing-card">
-                    <h3>Basic</h3>
-                    <p className="price">$99 <span>/month</span></p>
-                    <ul>
-                    <li>✔ Lead Generation</li>
-                    <li>✔ AI Marketing</li>
-                    <li>✔ Email Automation</li>
-                    </ul>
-                    <button className="btn-secondary">Get Started</button>
-                </div>
+                    <div className="pricing-grid">
+                    {/* Basic Plan */}
+                    <div className="pricing-card">
+                        <h3>Basic</h3>
+                        <p className="price">$99 <span>/month</span></p>
+                        <ul>
+                        <li>✔ Lead Generation</li>
+                        <li>✔ AI Marketing</li>
+                        <li>✔ Email Automation</li>
+                        </ul>
+                        <button className="btn-secondary">Get Started</button>
+                    </div>
 
-                {/* Pro Plan */}
-                <div className="pricing-card popular">
-                    <div className="badge">Most Popular</div>
-                    <h3>Pro</h3>
-                    <p className="price">$299 <span>/month</span></p>
-                    <ul>
-                    <li>✔ Everything in Basic</li>
-                    <li>✔ Dedicated Support</li>
-                    <li>✔ Advanced Analytics</li>
-                    </ul>
-                    <button className="btn-primary">Get Started</button>
-                </div>
+                    {/* Pro Plan */}
+                    <div className="pricing-card popular">
+                        <div className="badge">Most Popular</div>
+                        <h3>Pro</h3>
+                        <p className="price">$299 <span>/month</span></p>
+                        <ul>
+                        <li>✔ Everything in Basic</li>
+                        <li>✔ Dedicated Support</li>
+                        <li>✔ Advanced Analytics</li>
+                        </ul>
+                        <button className="btn-primary">Get Started</button>
+                    </div>
 
-                {/* Enterprise Plan */}
-                <div className="pricing-card">
-                    <h3>Enterprise</h3>
-                    <p className="price">Custom</p>
-                    <ul>
-                    <li>✔ Everything in Pro</li>
-                    <li>✔ Custom Integrations</li>
-                    <li>✔ Personalized Solutions</li>
-                    </ul>
-                    <button className="btn-secondary">Contact Us</button>
+                    {/* Enterprise Plan */}
+                    <div className="pricing-card">
+                        <h3>Enterprise</h3>
+                        <p className="price">Custom</p>
+                        <ul>
+                        <li>✔ Everything in Pro</li>
+                        <li>✔ Custom Integrations</li>
+                        <li>✔ Personalized Solutions</li>
+                        </ul>
+                        <button className="btn-secondary">Contact Us</button>
+                    </div>
+                    </div>
                 </div>
-                </div>
-            </div>
             </section>
 
             {/* FAQ Section */}
@@ -235,11 +240,12 @@ const LandingPage = () => {
 
 
             {/* CTA Section */}
-            <section className="cta-section">
+            <section className="cta-section" id="contact">
                 <div className="cta-container">
                     <h2 className="cta-title">Ready to Fill Your Pipeline?</h2>
                     <p className="cta-subtitle">
-                        Get started with Voxa today and discover how our platform can transform your lead generation and outreach process.
+                        Get started with Voxa today and discover how our platform can transform your marketing.
+                        Fill in your details and we will respond to you ASAP!!!
                     </p>
                     <div className="cta-form">
                         <input 
