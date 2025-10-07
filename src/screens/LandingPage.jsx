@@ -160,17 +160,12 @@ const LandingPage = () => {
 
             {/* Pricing Section */}
             <section className="pricing-section" id="pricing">
-                <div className="pricing-container">
+                {/* <div className="pricing-container">
                     <h2 className="pricing-title">Find the perfect plan for your business</h2>
                     <p className="pricing-subtitle">
                     Choose the plan that’s right for your business
                     </p>
-                    {/* <p className="pricing-subtitle">
-                    Choose the plan that’s right for your business. All plans come with a 14-day free trial.
-                    </p> */}
-
                     <div className="pricing-grid">
-                    {/* Basic Plan */}
                     <div className="pricing-card">
                         <h3>Basic</h3>
                         <p className="price">$99 <span>/month</span></p>
@@ -182,7 +177,6 @@ const LandingPage = () => {
                         <button className="btn-secondary">Get Started</button>
                     </div>
 
-                    {/* Pro Plan */}
                     <div className="pricing-card popular">
                         <div className="badge">Most Popular</div>
                         <h3>Pro</h3>
@@ -195,7 +189,6 @@ const LandingPage = () => {
                         <button className="btn-primary">Get Started</button>
                     </div>
 
-                    {/* Enterprise Plan */}
                     <div className="pricing-card">
                         <h3>Enterprise</h3>
                         <p className="price">Custom</p>
@@ -207,8 +200,9 @@ const LandingPage = () => {
                         <button className="btn-secondary">Contact Us</button>
                     </div>
                     </div>
-                </div>
+                </div> */}
             </section>
+            
 
             {/* FAQ Section */}
             <section className="faq-section">
@@ -280,29 +274,27 @@ const LandingPage = () => {
                         </div>
                         
                         <div className="footer-section">
-                            <h4>Company</h4>
+                            {/* <h4>Company</h4> */}
                             <ul>
-                                <li><a href="#">About Us</a></li>
-                                <li><a href="#">Careers</a></li>
+                                {/* <li><a href="#">About Us</a></li> */}
+                                {/* <li><a href="#">Careers</a></li> */}
                                 {/* <li><a href="#">Blog</a></li> */}
                                 {/* <li><a href="#">Press</a></li> */}
                             </ul>
                         </div>
                         
-                        <div className="footer-section">
+                        {/* <div className="footer-section">
                             <h4>Product</h4>
                             <ul>
                                 <li><a href="#">Features</a></li>
                                 <li><a href="#">Pricing</a></li>
-                                {/* <li><a href="#">Integrations</a></li> */}
-                                {/* <li><a href="#">API</a></li> */}
                             </ul>
-                        </div>
+                        </div> */}
                         
                         <div className="footer-section">
                             <h4>Resources</h4>
                             <ul>
-                                <li><a href="#">Help Center</a></li>
+                                {/* <li><a href="#">Help Center</a></li> */}
                                 {/* <li><a href="#">Documentation</a></li> */}
                                 {/* <li><a href="#">Webinars</a></li> */}
                                 <li><a href="#">Contact Support</a></li>

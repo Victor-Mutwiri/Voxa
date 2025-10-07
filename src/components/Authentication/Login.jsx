@@ -91,9 +91,9 @@ const Login = () => {
                     <input type="checkbox" />
                     <span className="checkbox-text">Remember me</span>
                 </label>
-                <button type="button" className="forgot-password">
+                {/* <button type="button" className="forgot-password">
                     Forgot password?
-                </button>
+                </button> */}
             </div>
 
             <button 

@@ -23,7 +23,7 @@ const Navbar = () => {
       
       <div className='nav-links'>
         <a href="/" className="nav-link" >Home</a>
-        <a href="/#pricing" className="nav-link" onClick={handlePricingClick}>Pricing</a>
+        {/* <a href="/#pricing" className="nav-link" onClick={handlePricingClick}>Pricing</a> */}
         <a href="/#contact" className="nav-link" onClick={handleContactClick}>Contact</a>
         <div className="get-started-button">
           <a href="/dashboard" className="nav-link">Login</a>
