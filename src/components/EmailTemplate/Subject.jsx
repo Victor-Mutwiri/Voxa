@@ -13,6 +13,10 @@ const Subject = () => {
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
+  const { isExecuting, executionsToday, startExecution, endExecution } = useStore();
+
+  const DAILY_LIMIT = 5;
+
   // New: manual input mode
   const [mode, setMode] = useState("ai"); // "ai" | "manual"
 
@@ -25,6 +29,21 @@ const Subject = () => {
 
     setLoading(true);
     setError(null);
+
+    // ✅ Block if execution in progress
+    if (isExecuting) {
+      setError("Another generation is already running. Please wait.");
+      return;
+    }
+
+    // ✅ Block if daily limit exceeded
+    if (executionsToday.Subject >= DAILY_LIMIT) {
+      setError("Daily limit reached (5). Try again tomorrow.");
+      return;
+    }
+
+    setError(null);
+    startExecution("Subject");
 
     try {
       const res = await fetch("http://localhost:5678/webhook-test/template", {
@@ -71,6 +90,7 @@ const Subject = () => {
       setError(err.message);
     } finally {
       setLoading(false);
+      endExecution();
     }
   };
 

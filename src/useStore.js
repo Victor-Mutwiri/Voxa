@@ -1,7 +1,7 @@
 // useStore.js
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import { supabase } from './supabaseClient';
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
+import { supabase } from "./supabaseClient";
 
 const useStore = create(
   persist(
@@ -22,13 +22,34 @@ const useStore = create(
         stepNumber: null,
       },
 
-      setFilter: (key, value) => 
+      setFilter: (key, value) =>
         set((state) => ({
-          filters: { ...state.filters, [key]: value }
+          filters: { ...state.filters, [key]: value },
         })),
+
+      // ✅ Execution control
+      isExecuting: false,
+      executionsToday: { Subject: 0, EmailBody: 0 },
 
       setUserId: (id) => set({ userId: id }),
 
+      startExecution: (type) => {
+        const { executionsToday } = get();
+        set({
+          isExecuting: true,
+          executionsToday: {
+            ...executionsToday,
+            [type]: (executionsToday[type] || 0) + 1,
+          },
+        });
+      },
+
+      endExecution: () => set({ isExecuting: false }),
+
+      resetDailyCounts: () =>
+        set({ executionsToday: { Subject: 0, EmailBody: 0 } }),
+
+      // ✅ Campaigns
       fetchCampaigns: async () => {
         set({ loading: true, error: null });
         try {
@@ -36,7 +57,7 @@ const useStore = create(
           if (!userId) throw new Error("No user found");
 
           const { data, error } = await supabase
-            .from("campaign") // ✅ make sure your table is `campaigns` plural
+            .from("campaign")
             .select("*")
             .eq("user_id", userId)
             .order("created_at", { ascending: false });
@@ -50,7 +71,6 @@ const useStore = create(
         }
       },
 
-      // CREATE CAMPAIGN
       createCampaign: async (name) => {
         try {
           const userId = get().userId;
@@ -63,7 +83,6 @@ const useStore = create(
 
           if (error) throw error;
 
-          // Prepend new campaign
           set({ campaigns: [data[0], ...get().campaigns] });
           return data[0];
         } catch (err) {
@@ -72,7 +91,6 @@ const useStore = create(
         }
       },
 
-      // DELETE CAMPAIGN
       deleteCampaign: async (id) => {
         try {
           const { error } = await supabase.from("campaign").delete().eq("id", id);
@@ -86,6 +104,7 @@ const useStore = create(
         }
       },
 
+      // ✅ Leads
       fetchLeads: async () => {
         set({ loading: true, error: null });
         try {
@@ -94,26 +113,26 @@ const useStore = create(
 
           const { data, error } = await supabase
             .from("extracted_leads")
-            .select(`
+            .select(
+              `
               *,
               outreach_logs!left (
                 step_number,
                 campaign_id
               )
-            `)
+            `
+            )
             .eq("user_id", userId);
 
           if (error) throw error;
 
-          // 👉 Process outreach_logs to find latest step_number per lead
           const processedLeads = data.map((lead) => {
             const logs = lead.outreach_logs || [];
             let current_step = 0;
             let current_campaign_id = null;
 
             if (logs.length > 0) {
-              // Get max step_number (latest)
-              const latestLog = logs.reduce((a, b) => 
+              const latestLog = logs.reduce((a, b) =>
                 a.step_number > b.step_number ? a : b
               );
               current_step = latestLog.step_number;
@@ -135,7 +154,7 @@ const useStore = create(
         }
       },
 
-
+      // ✅ Templates
       fetchEmailBodies: async () => {
         set({ loading: true, error: null });
         try {
@@ -180,22 +199,10 @@ const useStore = create(
         }
       },
 
-      // Set Active Campaign
-      setActiveCampaign: (campaign) => {
-        set({ activeCampaign: campaign });
-      },
+      setActiveCampaign: (campaign) => set({ activeCampaign: campaign }),
+      setActiveEmailBody: (template) => set({ activeEmailBody: template }),
+      setActiveEmailSubject: (template) => set({ activeEmailSubject: template }),
 
-      // Set Active Email Body
-      setActiveEmailBody: (template) => {
-        set({ activeEmailBody: template });
-      },
-
-      // Set Active Email Body
-      setActiveEmailSubject: (template) => {
-        set({ activeEmailSubject: template });
-      },
-
-      // Delete template
       deleteTemplate: async (templateId, type) => {
         try {
           const { error } = await supabase
@@ -205,14 +212,15 @@ const useStore = create(
 
           if (error) throw error;
 
-          // Update local state after deletion
           if (type === "EmailBody") {
             set({
               emailBodies: get().emailBodies.filter((t) => t.id !== templateId),
             });
           } else if (type === "EmailSubject") {
             set({
-              emailSubjects: get().emailSubjects.filter((t) => t.id !== templateId),
+              emailSubjects: get().emailSubjects.filter(
+                (t) => t.id !== templateId
+              ),
             });
           }
         } catch (err) {
@@ -221,8 +229,8 @@ const useStore = create(
         }
       },
 
-      resetStore: () => 
-        set({ 
+      resetStore: () =>
+        set({
           leads: [],
           emailBodies: [],
           emailSubjects: [],
@@ -232,9 +240,12 @@ const useStore = create(
           activeCampaign: null,
           loading: false,
           error: null,
-          userId: null }),
+          userId: null,
+        }),
     }),
-    { name: "app-storage" }
+    {
+      name: "app-storage", // ✅ single persist key
+    }
   )
 );
 

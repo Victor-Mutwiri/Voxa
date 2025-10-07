@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import useStore from '../useStore';
+import { useNavigate } from 'react-router';
 import { supabase } from '../supabaseClient';
 import LogoutModal from '../components/Authentication/LogoutModal';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,6 +11,7 @@ import {
   faSignOutAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import {
+  LogOut,
   Mail,
   Users,
   Layers,
@@ -31,8 +33,9 @@ const stepLabels = {
 const UserDashboard = () => {
   const { userId, leads, campaigns, fetchLeads, fetchCampaigns } = useStore();
   const [outreachLogs, setOutreachLogs] = useState([]);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [loading, setLoading] = useState(true);
-
+  const navigate = useNavigate();
   const linkedinProspects = leads.filter((lead) => lead.leads_linkedin_url);
   const totalLinkedinProspects = linkedinProspects.length;
   const [showAllProspects, setShowAllProspects] = useState(false);
@@ -67,6 +70,26 @@ const UserDashboard = () => {
     return acc;
   }, {});
 
+  const handleSignOut = () => {
+      setShowLogoutModal(true);
+  };
+  const handleLogoutConfirm = async () => {
+      try{
+      await supabase.auth.signOut();
+      useStore.getState().resetStore();
+      localStorage.clear();
+      localStorage.removeItem('user');
+      localStorage.removeItem('userId');
+      setShowLogoutModal(false);
+      navigate('/', {replace:true});
+      } catch (error) {
+      console.error('Logout failed:', error);
+      };
+  };
+  const handleLogoutCancel = () => {
+      setShowLogoutModal(false);
+  };
+
   return (
     <div className="userdashboard">
       {/* Sidebar */}
@@ -78,9 +101,9 @@ const UserDashboard = () => {
         </div>
         <nav className="menu">
           <ul>
-            <li>
+            {/* <li>
               <FontAwesomeIcon icon={faChartLine} /> Dashboard
-            </li>
+            </li> */}
             {/* <li>
               <FontAwesomeIcon icon={faEnvelope} /> Campaigns
             </li>
@@ -89,9 +112,23 @@ const UserDashboard = () => {
             </li> */}
           </ul>
         </nav>
-        <div className="logout">
+        {/* <div className="logout">
           <FontAwesomeIcon icon={faSignOutAlt} /> Logout
+        </div> */}
+        <div className="nav-signout">
+            <button
+                onClick={handleSignOut}
+                className="user-signout-btn"
+            >
+                <LogOut className="user-signout-icon" />
+                <span className="user-signout-label">Sign Out</span>
+            </button>
         </div>
+        <LogoutModal
+            open={showLogoutModal}
+            onClose={handleLogoutCancel}
+            onConfirm={handleLogoutConfirm}
+        />
       </aside>
 
       {/* Main content */}

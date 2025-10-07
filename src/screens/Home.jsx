@@ -71,26 +71,24 @@ const Home = () => {
     };
 
     const handleSignOut = () => {
-    setShowLogoutModal(true);
-  };
-  const handleLogoutConfirm = async () => {
-    try{
-      await supabase.auth.signOut();
-      useStore.getState().resetStore();
-      localStorage.clear();
-      localStorage.removeItem('user');
-      localStorage.removeItem('userId');
-      setShowLogoutModal(false);
-      navigate('/', {replace:true});
-    } catch (error) {
-      console.error('Logout failed:', error);
+        setShowLogoutModal(true);
     };
-  };
-
-
-  const handleLogoutCancel = () => {
-    setShowLogoutModal(false);
-  };
+    const handleLogoutConfirm = async () => {
+        try{
+        await supabase.auth.signOut();
+        useStore.getState().resetStore();
+        localStorage.clear();
+        localStorage.removeItem('user');
+        localStorage.removeItem('userId');
+        setShowLogoutModal(false);
+        navigate('/', {replace:true});
+        } catch (error) {
+        console.error('Logout failed:', error);
+        };
+    };
+    const handleLogoutCancel = () => {
+        setShowLogoutModal(false);
+    };
     return (
         <div className="home-root">
             <div className="nav-panel">
