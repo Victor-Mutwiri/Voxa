@@ -121,40 +121,78 @@ html {
 
 /* Trust Section */
 .trust-section {
-    background: #f8fafc;
+    background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
     padding: 30px 20px;
     text-align: center;
+    overflow: hidden;
+    position: relative;
+}
+
+.trust-container {
+    max-width: 1100px;
+    margin: 0 auto;
 }
 
 .trust-text {
-    color: #64748b;
-    font-size: 0.9rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    margin-bottom: 16px;
+    color: #6366f1;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    margin-bottom: 14px;
     text-transform: uppercase;
 }
 
 .trust-stats {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     color: #1e293b;
-    margin-bottom: 40px;
+    font-weight: 700;
+    margin-bottom: 50px;
 }
 
-.company-logos {
+/* Logo slider effect */
+.logos-wrapper {
     display: flex;
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+}
+
+.logos-slide {
+    display: flex;
+    align-items: center;
     justify-content: center;
     gap: 60px;
-    flex-wrap: wrap;
-    max-width: 800px;
-    margin: 0 auto;
+    animation: scroll 30s linear infinite;
 }
 
 .logo-item {
-    color: #64748b;
     font-weight: 600;
     font-size: 1.1rem;
+    color: #475569;
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 12px 20px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    white-space: nowrap;
 }
+
+.logo-item:hover {
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+    color: #4f46e5;
+}
+
+/* Continuous scrolling animation */
+@keyframes scroll {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-100%);
+    }
+}
+
 
 /* Services Section */
 .services-section {
@@ -331,6 +369,14 @@ html {
     color: #64748b;
     font-size: 0.85rem;
 }
+.author-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #e2e8f0;
+}
+
 
 /* Pricing Section */
 .pricing-section {

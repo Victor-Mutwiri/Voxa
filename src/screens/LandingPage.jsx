@@ -1,9 +1,15 @@
 import Navbar from "../components/Navbar/Navbar";
 import { Search, Mail, BarChart3, Star, Users, TrendingUp, Target } from 'lucide-react';
 import Boredperson from '../assets/bored person.png';
-import Landingpageimage from '../assets/Heroimage.jpg';
+import Landingpageimage from '../assets/background1.jpeg';
+/* import Landingpageimage from '../assets/Heroimage.jpg'; */
 /* import Landingpageimage from '../assets/Landingpage.png'; */
 import '../styles/landingpage.css';
+import Sarah from '../assets/Sarah Chen.jpg'
+import David from '../assets/David Sterling.jpg'
+import Maria from '../assets/Maria Rodriguez.jpg'
+import Ben from '../assets/Ben Carter.jpg'
+import Mark from '../assets/Mark Johnson.jpg'
 
 const LandingPage = () => {
     return (
@@ -25,9 +31,9 @@ const LandingPage = () => {
                             <h1 className="hero-title">
                                 <span className="highlight">Traditional</span> Marketing <br /> is SLOOOOW
                             </h1>
-                            <p className="hero-subtitle">
+                            {/* <p className="hero-subtitle">
                             Voxa helps you reach more clients, book more meetings, and close more deals every month—without the grind of outdated strategies.
-                            </p>
+                            </p> */}
                             <div className="hero-buttons">
                                 <button className="btn-primary">Get Started</button>
                             </div>
@@ -38,22 +44,40 @@ const LandingPage = () => {
 
             {/* Trust Section */}
             <section className="trust-section">
-                <p className="trust-text">TRUSTED BY GROWING BUSINESSES</p>
-                <div className="trust-stats">
-                    <strong>Over 200+ SMBs use Voxa to find quality leads</strong>
-                </div>
-                <div className="company-logos">
-                    <div className="logo-item">ACME Inc.</div>
-                    <div className="logo-item">TechFlow</div>
-                    <div className="logo-item">GrowthHub</div>
-                    <div className="logo-item">Voltemad Wineries</div>
-                    <div className="logo-item">Jerry & Co Contractors</div>
-                    <div className="logo-item">Quantum</div>
-                    <div className="logo-item">Elevate</div>
-                    <div className="logo-item">ConnectPlus</div>
-                    <div className="logo-item">GrowthCorp</div>
+                <div className="trust-container">
+                    <p className="trust-text">TRUSTED BY GROWING BUSINESSES</p>
+                    <div className="trust-stats">
+                        <strong>Over 200+ SMBs use VoXa to find quality leads</strong>
+                    </div>
+
+                    <div className="logos-wrapper">
+                        <div className="logos-slide">
+                            <div className="logo-item">ACME Inc.</div>
+                            <div className="logo-item">TechFlow</div>
+                            <div className="logo-item">GrowthHub</div>
+                            <div className="logo-item">Voltemad Wineries</div>
+                            <div className="logo-item">Jerry & Co Contractors</div>
+                            <div className="logo-item">Quantum</div>
+                            <div className="logo-item">Elevate</div>
+                            <div className="logo-item">ConnectPlus</div>
+                            <div className="logo-item">GrowthCorp</div>
+                        </div>
+                        {/* duplicate for infinite scroll effect */}
+                        <div className="logos-slide">
+                            <div className="logo-item">ACME Inc.</div>
+                            <div className="logo-item">TechFlow</div>
+                            <div className="logo-item">GrowthHub</div>
+                            <div className="logo-item">Voltemad Wineries</div>
+                            <div className="logo-item">Jerry & Co Contractors</div>
+                            <div className="logo-item">Quantum</div>
+                            <div className="logo-item">Elevate</div>
+                            <div className="logo-item">ConnectPlus</div>
+                            <div className="logo-item">GrowthCorp</div>
+                        </div>
+                    </div>
                 </div>
             </section>
+
 
             {/* Services Section */}
             <section className="services-section">
@@ -99,64 +123,90 @@ const LandingPage = () => {
                 <div className="testimonials-container">
                     <h2 className="testimonials-title">What Our Clients Say</h2>
                     <p className="testimonials-subtitle">
-                        Don't just take our word for it. See what other businesses have achieved with Voxa.
+                        Don't just take our word for it. See what other businesses have achieved with VoXa.
                     </p>
-                    
+
                     <div className="testimonials-grid">
+
                         <div className="testimonial-card">
                             <p className="testimonial-text">
-                                "Voxa transformed our lead generation process. We've seen a 3x increase in qualified leads and our sales team is closing deals faster than ever before."
+                                “Before VoXa, our team spent more time chasing leads than talking to customers. 
+                                Now it’s the other way around. We’re having more meaningful sales conversations and 
+                                closing deals faster.”
                             </p>
                             <div className="testimonial-author">
-                                <div className="author-avatar">JD</div>
+                                <img src={Sarah} alt="Sarah Chen" className="author-avatar" />
                                 <div className="author-info">
-                                    <strong>Jane Doe</strong>
-                                    <span>Director of Marketing, GrowthCorp</span>
+                                    <strong>Sarah Chen</strong>
+                                    <span>CEO, ConnectSphere SaaS</span>
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div className="testimonial-card">
                             <p className="testimonial-text">
-                                "The automated outreach features saved our team countless hours. The personalization capabilities are impressive and have significantly improved our response rates."
+                                “I wasn’t sure an AI system could handle the kind of personal outreach 
+                                our firm needs, but VoXa proved me wrong. It sounds natural, keeps our tone,
+                                 and saves us hours every week.”
                             </p>
                             <div className="testimonial-author">
-                                <div className="author-avatar">MS</div>
+                                <img src={David} alt="David Sterling" className="author-avatar" />
                                 <div className="author-info">
-                                    <strong>Michael Smith</strong>
-                                    <span>Sales Manager, ConnectPlus</span>
+                                    <strong>David Sterling</strong>
+                                    <span>Managing Partner, Sterling Wealth Management</span>
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div className="testimonial-card">
                             <p className="testimonial-text">
-                                "As a small business, finding the right leads was always challenging. Voxa's platform made it simple to identify and connect with our ideal customers."
+                                “Real estate moves fast, and VoXa helps us keep up. It reaches out to new 
+                                leads the moment they show interest — we’ve definitely seen an improvement 
+                                in how quickly we connect with clients.”
                             </p>
                             <div className="testimonial-author">
-                                <div className="author-avatar">AL</div>
+                                <img src={Maria} alt="Maria Rodriguez" className="author-avatar" />
                                 <div className="author-info">
-                                    <strong>Amanda Lee</strong>
-                                    <span>Founder, Evolve Solutions</span>
+                                    <strong>Maria Rodriguez</strong>
+                                    <span>Principal Broker, Apex Realty Group</span>
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div className="testimonial-card">
                             <p className="testimonial-text">
-                                "The analytics dashboard gives us clear visibility into our business performance. We can quickly adjust our strategy based on real data."
+                                “We started using VoXa to handle early-stage outreach for a few 
+                                clients, and it’s been surprisingly effective. It freed up our 
+                                team to focus on creative work without missing new opportunities.”
                             </p>
                             <div className="testimonial-author">
-                                <div className="author-avatar">RJ</div>
+                                <img src={Ben} alt="Ben Carter" className="author-avatar" />
                                 <div className="author-info">
-                                    <strong>Robert Johnson</strong>
-                                    <span>CEO, Scaler Digital</span>
+                                    <strong>Ben Carter</strong>
+                                    <span>Founder, Pixelate Digital Marketing</span>
                                 </div>
                             </div>
                         </div>
+
+                        <div className="testimonial-card">
+                            <p className="testimonial-text">
+                                “Our market is small and competitive, so finding the right contacts 
+                                matters. VoXa helped us start conversations with the people who 
+                                actually make decisions — that alone has been a big win.”
+                            </p>
+                            <div className="testimonial-author">
+                                <img src={Mark} alt="Mark Johnson" className="author-avatar" />
+                                <div className="author-info">
+                                    <strong>Mark Johnson</strong>
+                                    <span>VP of Sales, Titan Industrial Supply</span>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </section>
+
 
             {/* Pricing Section */}
             <section className="pricing-section" id="pricing">
