@@ -1,5 +1,6 @@
 import Navbar from "../components/Navbar/Navbar";
-import { Search, Mail, BarChart3, Star, Users, TrendingUp, Target } from 'lucide-react';
+import { Search, Mail, BarChart3, Star, Users, TrendingUp, Target, ChevronDown } from 'lucide-react';
+import FAQSection from "../components/Faq";
 import Boredperson from '../assets/bored person.png';
 import Landingpageimage from '../assets/background1.jpeg';
 /* import Landingpageimage from '../assets/Heroimage.jpg'; */
@@ -250,7 +251,7 @@ const LandingPage = () => {
             
 
             {/* FAQ Section */}
-            <section className="faq-section">
+            {/* <section className="faq-section">
             <div className="faq-container">
                 <h2 className="faq-title">Frequently Asked Questions</h2>
 
@@ -279,7 +280,8 @@ const LandingPage = () => {
                 </div>
                 </div>
             </div>
-            </section>
+            </section> */}
+            <FAQSection />
 
 
             {/* CTA Section */}
