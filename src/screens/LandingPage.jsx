@@ -123,84 +123,79 @@ const LandingPage = () => {
                 <div className="testimonials-container">
                     <h2 className="testimonials-title">What Our Clients Say</h2>
                     <p className="testimonials-subtitle">
-                        Don't just take our word for it. See what other businesses have achieved with VoXa.
+                        Real feedback from businesses using VoXa to automate their growth.
                     </p>
 
                     <div className="testimonials-grid">
 
                         <div className="testimonial-card">
-                            <p className="testimonial-text">
-                                “Before VoXa, our team spent more time chasing leads than talking to customers. 
-                                Now it’s the other way around. We’re having more meaningful sales conversations and 
-                                closing deals faster.”
-                            </p>
-                            <div className="testimonial-author">
+                            <div className="testimonial-header">
                                 <img src={Sarah} alt="Sarah Chen" className="author-avatar" />
                                 <div className="author-info">
                                     <strong>Sarah Chen</strong>
-                                    <span>CEO, ConnectSphere SaaS</span>
+                                    <span>@ConnectSphere • CEO</span>
                                 </div>
                             </div>
+                            <p className="testimonial-text">
+                                “Before VoXa, our team spent more time chasing leads than talking to customers.
+                                Now it’s the other way around. We’re having more meaningful sales conversations and closing deals faster.”
+                            </p>
                         </div>
 
                         <div className="testimonial-card">
-                            <p className="testimonial-text">
-                                “I wasn’t sure an AI system could handle the kind of personal outreach 
-                                our firm needs, but VoXa proved me wrong. It sounds natural, keeps our tone,
-                                 and saves us hours every week.”
-                            </p>
-                            <div className="testimonial-author">
+                            <div className="testimonial-header">
                                 <img src={David} alt="David Sterling" className="author-avatar" />
                                 <div className="author-info">
                                     <strong>David Sterling</strong>
-                                    <span>Managing Partner, Sterling Wealth Management</span>
+                                    <span>@SterlingWealth • Managing Partner</span>
                                 </div>
                             </div>
+                            <p className="testimonial-text">
+                                “I wasn’t sure an AI system could handle the kind of personal outreach our firm needs,
+                                but VoXa proved me wrong. It sounds natural, keeps our tone, and saves us hours every week.”
+                            </p>
                         </div>
 
                         <div className="testimonial-card">
-                            <p className="testimonial-text">
-                                “Real estate moves fast, and VoXa helps us keep up. It reaches out to new 
-                                leads the moment they show interest — we’ve definitely seen an improvement 
-                                in how quickly we connect with clients.”
-                            </p>
-                            <div className="testimonial-author">
+                            <div className="testimonial-header">
                                 <img src={Maria} alt="Maria Rodriguez" className="author-avatar" />
                                 <div className="author-info">
                                     <strong>Maria Rodriguez</strong>
-                                    <span>Principal Broker, Apex Realty Group</span>
+                                    <span>@ApexRealty • Principal Broker</span>
                                 </div>
                             </div>
+                            <p className="testimonial-text">
+                                “Real estate moves fast, and VoXa helps us keep up. It reaches out to new leads the moment they show interest —
+                                we’ve definitely seen an improvement in how quickly we connect with clients.”
+                            </p>
                         </div>
 
                         <div className="testimonial-card">
-                            <p className="testimonial-text">
-                                “We started using VoXa to handle early-stage outreach for a few 
-                                clients, and it’s been surprisingly effective. It freed up our 
-                                team to focus on creative work without missing new opportunities.”
-                            </p>
-                            <div className="testimonial-author">
+                            <div className="testimonial-header">
                                 <img src={Ben} alt="Ben Carter" className="author-avatar" />
                                 <div className="author-info">
                                     <strong>Ben Carter</strong>
-                                    <span>Founder, Pixelate Digital Marketing</span>
+                                    <span>@PixelateAgency • Founder</span>
                                 </div>
                             </div>
+                            <p className="testimonial-text">
+                                “We started using VoXa to handle early-stage outreach for a few clients,
+                                and it’s been surprisingly effective. It freed up our team to focus on creative work without missing new opportunities.”
+                            </p>
                         </div>
 
                         <div className="testimonial-card">
-                            <p className="testimonial-text">
-                                “Our market is small and competitive, so finding the right contacts 
-                                matters. VoXa helped us start conversations with the people who 
-                                actually make decisions — that alone has been a big win.”
-                            </p>
-                            <div className="testimonial-author">
+                            <div className="testimonial-header">
                                 <img src={Mark} alt="Mark Johnson" className="author-avatar" />
                                 <div className="author-info">
                                     <strong>Mark Johnson</strong>
-                                    <span>VP of Sales, Titan Industrial Supply</span>
+                                    <span>@TitanSupply • VP of Sales</span>
                                 </div>
                             </div>
+                            <p className="testimonial-text">
+                                “Our market is small and competitive, so finding the right contacts matters.
+                                VoXa helped us start conversations with the people who actually make decisions — that alone has been a big win.”
+                            </p>
                         </div>
 
                     </div>
@@ -289,22 +284,54 @@ const LandingPage = () => {
 
             {/* CTA Section */}
             <section className="cta-section" id="contact">
-                <div className="cta-container">
-                    <h2 className="cta-title">Ready to Fill Your Pipeline?</h2>
-                    <p className="cta-subtitle">
-                        Get started with Voxa today and discover how our platform can transform your marketing.
-                        Fill in your details and we will respond to you ASAP!!!
-                    </p>
-                    <div className="cta-form">
-                        <input 
-                            type="email" 
-                            placeholder="Enter your email"
-                            className="email-input"
-                        />
-                        <button className="get-demo-btn">Contact me</button>
+                <h4 className="contact-heading">Get in touch</h4>
+                <div className="contact-wrapper">
+                    {/* Left Side - Info Card */}
+                    <div className="contact-info">
+                        <p className="contact-text">
+                            We'd love to hear from you. Reach out through any of the channels below or send us a quick message.
+                        </p>
+
+                        <div className="info-item">
+                            <i className="fa-solid fa-envelope info-icon"></i>
+                            <div>
+                                <strong>Email Us</strong>
+                            <p>hello@voxa.ai</p>
+                            </div>
+                        </div>
+
+                        <div className="info-item">
+                            <i className="fa-solid fa-phone info-icon"></i>
+                            <div>
+                                <strong>Call Us</strong>
+                                <p>+254 712 345 678</p>
+                            </div>
+                        </div>
+
+                        <div className="social-links">
+                            <a href="#"><i className="fa-brands fa-x-twitter"></i></a>
+                            <a href="#"><i className="fa-brands fa-linkedin-in"></i></a>
+                            <a href="#"><i className="fa-brands fa-instagram"></i></a>
+                        </div>
                     </div>
+
+                    {/* Right Side - Message Form */}
+                    <form className="contact-form">
+                        <h3 className="form-heading">Send us a message</h3>
+                        <div className="form-row">
+                            <input type="text" placeholder="Name *" required />
+                            <input type="email" placeholder="Email *" required />
+                        </div>
+                        <div className="form-row">
+                            <input type="text" placeholder="Industry *" required />
+                        </div>
+                        <textarea placeholder="Message (optional)" rows="4"></textarea>
+                        <button type="submit" className="send-btn">Send</button>
+                    </form>
                 </div>
             </section>
+
+
 
             {/* Footer */}
             <footer className="footer">
@@ -353,12 +380,12 @@ const LandingPage = () => {
                     </div>
                     
                     <div className="footer-bottom">
-                        <p>&copy; 2025 Voxa. All rights reserved.</p>
-                        <div className="footer-links">
+                        <p>&copy; {new Date().getFullYear()} Voxa. All rights reserved.</p>
+                        {/* <div className="footer-links">
                             <a href="#">Privacy Policy</a>
                             <a href="#">Terms of Service</a>
                             <a href="#">Security</a>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </footer>
