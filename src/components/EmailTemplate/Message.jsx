@@ -28,9 +28,15 @@ const Message = () => {
     setError(null);
 
     try {
-      const res = await fetch(`${import.meta.env.MODE === 'development' ? import.meta.VITE_DEV_TEMPLATE_URL : import.meta.VITE_PROD_TEMPLATE_URL }`, {
+      const apiUrl = import.meta.env.MODE === 'development' 
+            ? import.meta.env.VITE_DEV_TEMPLATE_URL 
+            : import.meta.env.VITE_PROD_TEMPLATE_URL;
+      
+      const res = await fetch(apiUrl, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "Accept": "application/json"},
         body: JSON.stringify({ prompt }),
       });
 

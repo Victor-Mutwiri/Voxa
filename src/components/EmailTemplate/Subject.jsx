@@ -50,8 +50,8 @@ const Subject = () => {
             ? import.meta.env.VITE_DEV_TEMPLATE_URL 
             : import.meta.env.VITE_PROD_TEMPLATE_URL;
 
-      console.log('Using API URL:', apiUrl);
-      console.log('Environment mode:', import.meta.env.MODE);
+      /* console.log('Using API URL:', apiUrl);
+      console.log('Environment mode:', import.meta.env.MODE); */
 
       const res = await fetch(apiUrl, {
         method: "POST",
@@ -61,7 +61,7 @@ const Subject = () => {
         body: JSON.stringify({ prompt }),
       });
 
-      console.log('Response status:', res.status);
+      /* console.log('Response status:', res.status); */
 
       if (!res.ok) {
           const errorText = await res.text();

@@ -22,7 +22,11 @@ const Leads = () => {
     setIsFetching(true);
     setIsModalOpen(false);
 
-    await fetch(`${import.meta.env.Dev? import.meta.VITE_DevSaveSearchUrl : import.meta.VITE_ProdSaveSearchUrl }`, {
+    const apiUrl = import.meta.env.MODE === 'development' 
+            ? import.meta.env.VITE_DevSaveSearchUrl 
+            : import.meta.env.VITE_ProdSaveSearchUrl;
+
+    await fetch(apiUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),
