@@ -15,7 +15,7 @@ const Subject = () => {
 
   const { isExecuting, executionsToday, startExecution, endExecution } = useStore();
 
-  const DAILY_LIMIT = 5;
+  const DAILY_LIMIT = 10;
 
   // New: manual input mode
   const [mode, setMode] = useState("ai"); // "ai" | "manual"
@@ -38,7 +38,7 @@ const Subject = () => {
 
     // ✅ Block if daily limit exceeded
     if (executionsToday.Subject >= DAILY_LIMIT) {
-      setError("Daily limit reached (5). Try again tomorrow.");
+      setError("Daily limit reached (10). Try again tomorrow.");
       return;
     }
 
@@ -46,14 +46,27 @@ const Subject = () => {
     startExecution("Subject");
 
     try {
-      const res = await fetch(`${import.meta.env.MODE === 'development' ? import.meta.VITE_DEV_TEMPLATE_URL : import.meta.VITE_PROD_TEMPLATE_URL }`, {
+      const apiUrl = import.meta.env.MODE === 'development' 
+            ? import.meta.env.VITE_DEV_TEMPLATE_URL 
+            : import.meta.env.VITE_PROD_TEMPLATE_URL;
+
+      console.log('Using API URL:', apiUrl);
+      console.log('Environment mode:', import.meta.env.MODE);
+
+      const res = await fetch(apiUrl, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "Accept": "application/json"},
         body: JSON.stringify({ prompt }),
       });
 
+      console.log('Response status:', res.status);
+
       if (!res.ok) {
-        throw new Error(`HTTP ${res.status}: Failed to generate subject line`);
+          const errorText = await res.text();
+          console.error('Server error response:', errorText);
+          throw new Error(`HTTP ${res.status}: ${res.statusText || 'Failed to generate subject line'}`);
       }
 
       // Get response text first to debug
