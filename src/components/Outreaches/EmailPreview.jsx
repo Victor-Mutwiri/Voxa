@@ -82,7 +82,12 @@ const EmailPreview = ({ lead }) => {
         body: bodyContent || "No body content",
       };
 
-      const res = await fetch(`${import.meta.env.Dev? import.meta.VITE_DEV_SENDEMAIL_URL : import.meta.VITE_PROD_SENDEMAIL_URL }`, {
+      const apiUrl = import.meta.env.MODE === 'development' 
+            ? import.meta.env.VITE_DEV_SENDEMAIL_URL 
+            : import.meta.env.VITE_PROD_SENDEMAIL_URL;
+      
+      
+      const res = await fetch(apiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

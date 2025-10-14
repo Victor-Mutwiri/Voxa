@@ -160,7 +160,7 @@ const Subject = () => {
         if (error) throw error;
 
         /* console.log("Saved successfully:", data); */
-        toast.success('Template saved successfully!', {
+        toast.success('Subject Template saved successfully!', {
           duration: 3000,
           position: 'top-right',
           style: {
