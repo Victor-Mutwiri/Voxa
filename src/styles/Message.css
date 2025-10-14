@@ -242,3 +242,18 @@
   color: #fff;
   border-color: #1d4ed8;
 }
+
+:root {
+  --toaster-success: #10B981;
+  --toaster-error: #EF4444;
+}
+
+.toast-success {
+  background: var(--toaster-success) !important;
+  color: white !important;
+}
+
+.toast-error {
+  background: var(--toaster-error) !important;
+  color: white !important;
+}

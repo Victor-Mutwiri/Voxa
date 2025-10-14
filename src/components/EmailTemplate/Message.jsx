@@ -1,4 +1,5 @@
 import { useState } from "react";
+import {toast, Toaster} from 'react-hot-toast';
 import "../../styles/Message.css";
 import useStore from "../../useStore";
 import { supabase } from "../../supabaseClient";
@@ -92,6 +93,15 @@ const Message = () => {
     setShowModal(true);
   };
 
+  const resetStates = () => {
+      setPrompt("");
+      setEmailBody("");
+      setIsEditing(false);
+      setEditedMessage("");
+      setError(null);
+      setShowModal(false);
+    };
+  
   // Confirm save (you’ll add Supabase logic here)
   const confirmSave = async () => {
     setShowModal(false);
@@ -118,9 +128,19 @@ const Message = () => {
         if (error) throw error;
 
         console.log("Saved successfully:", data);
-        alert("✅ Template saved successfully!");
+        toast.success('Template saved successfully!', {
+          duration: 3000,
+          position: 'top-right',
+          style: {
+            background: '#10B981',
+            color: '#fff',
+            borderRadius: '8px',
+          },
+        });
+        resetStates();
     } catch (err) {
         console.error("Error saving template:", err.message);
+        toast.error('Failed to save template');
         setError(err.message);
     }
     };
@@ -128,6 +148,7 @@ const Message = () => {
 
   return (
     <div className="message-container">
+      <Toaster />
       <h2 className="message-title">
         <FontAwesomeIcon icon={faEnvelopeOpenText} /> Email Message
       </h2>
