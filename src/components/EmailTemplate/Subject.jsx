@@ -15,7 +15,7 @@ const Subject = () => {
 
   const { isExecuting, executionsToday, startExecution, endExecution } = useStore();
 
-  const DAILY_LIMIT = 10;
+  const DAILY_LIMIT = 5;
 
   // New: manual input mode
   const [mode, setMode] = useState("ai"); // "ai" | "manual"
@@ -118,14 +118,24 @@ const Subject = () => {
   };
 
   const handleSave = () => {
-    console.log("Save clicked", subject);
+    /* console.log("Save clicked", subject); */
     setShowModal(true);
     // Add Supabase save logic here
   };
 
+
+  const resetStates = () => {
+      setPrompt("");
+      setSubject("");
+      setIsEditing(false);
+      setEditedSubject("");
+      setError(null);
+      setShowModal(false);
+    };
+  
+  
   // Confirm save (you’ll add Supabase logic here)
   const confirmSave = async () => {
-    setShowModal(false);
     const userId = useStore.getState().userId; // grab from zustand
 
     if (!userId) {
@@ -148,13 +158,15 @@ const Subject = () => {
 
         if (error) throw error;
 
-        console.log("Saved successfully:", data);
+        /* console.log("Saved successfully:", data); */
         alert("✅ Template saved successfully!");
+        resetStates();
     } catch (err) {
         console.error("Error saving template:", err.message);
         setError(err.message);
     }
     };
+
 
   return (
     <div className="message-container">
