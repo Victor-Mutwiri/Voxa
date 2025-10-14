@@ -15,7 +15,7 @@ const Subject = () => {
 
   const { isExecuting, executionsToday, startExecution, endExecution } = useStore();
 
-  const DAILY_LIMIT = 5;
+  const DAILY_LIMIT = 15;
 
   // New: manual input mode
   const [mode, setMode] = useState("ai"); // "ai" | "manual"
