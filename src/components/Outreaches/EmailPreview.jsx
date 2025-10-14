@@ -82,7 +82,7 @@ const EmailPreview = ({ lead }) => {
         body: bodyContent || "No body content",
       };
 
-      const res = await fetch("http://localhost:5678/webhook-test/sendmail", {
+      const res = await fetch(`${import.meta.env.Dev? import.meta.VITE_DEV_SENDEMAIL_URL : import.meta.VITE_PROD_SENDEMAIL_URL }`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

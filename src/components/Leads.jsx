@@ -22,7 +22,7 @@ const Leads = () => {
     setIsFetching(true);
     setIsModalOpen(false);
 
-    await fetch("http://localhost:5678/webhook-test/14c17b5d-bc40-4e37-962f-ff593521aff2", {
+    await fetch(`${import.meta.env.Dev? import.meta.VITE_DevSaveSearchUrl : import.meta.VITE_ProdSaveSearchUrl }`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),
