@@ -46,7 +46,7 @@ const Subject = () => {
     startExecution("Subject");
 
     try {
-      const res = await fetch(`${import.meta.env.Dev? import.meta.VITE_DEV_TEMPLATE_URL : import.meta.VITE_PROD_TEMPLATE_URL }`, {
+      const res = await fetch(`${import.meta.env.MODE === 'development' ? import.meta.VITE_DEV_TEMPLATE_URL : import.meta.VITE_PROD_TEMPLATE_URL }`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt }),
