@@ -94,6 +94,12 @@ const LandingPage = () => {
         }
     };
 
+    const handleCTAClick = (e) => {
+        e.preventDefault();
+        const pricingSection = document.querySelector('.cta-section');
+        pricingSection?.scrollIntoView({ behavior: 'smooth' });
+    };
+
     return (
         <div className="landing-page">
             <Toaster />
@@ -117,7 +123,7 @@ const LandingPage = () => {
                             Voxa helps you reach more clients, book more meetings, and close more deals every month—without the grind of outdated strategies.
                             </p> */}
                             <div className="hero-buttons">
-                                <button className="btn-primary">Get Started</button>
+                                <button className="btn-primary" onClick={handleCTAClick}>Get Started</button>
                             </div>
                         </div>
                     </div>
