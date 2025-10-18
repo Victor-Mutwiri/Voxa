@@ -1,3 +1,5 @@
+import {useState} from 'react'
+import { toast, Toaster } from 'react-hot-toast';
 import Navbar from "../components/Navbar/Navbar";
 import { Search, Mail, BarChart3, Star, Users, TrendingUp, Target, ChevronDown } from 'lucide-react';
 import FAQSection from "../components/Faq";
@@ -13,9 +15,88 @@ import Ben from '../assets/Ben Carter.jpg'
 import Mark from '../assets/Mark Johnson.jpg'
 
 const LandingPage = () => {
+
+    const webhook = import.meta.env.VITE_WEBHOOK_URL;
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        industry: '',
+        message: '',
+        from: 'Voxa'
+    });
+    const [submitStatus, setSubmitStatus] = useState({
+        loading: false,
+        success: false,
+        error: false
+    });
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setSubmitStatus({ loading: true, success: false, error: null });
+
+        /* console.log('Submitting form with data:', formData);
+        console.log('Submitting to webhook URL:', webhook); */
+        try {
+            const response = await fetch(webhook, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+
+            /* console.log('Response status:', response.status);
+            const responseData = await response.text();
+            console.log('Response data:', responseData); */
+
+            if (!response.ok) {
+                throw new Error('Failed to submit form');
+            }
+            setSubmitStatus({ loading: false, success: true, error: null });
+            setFormData({
+                name: '',
+                email: '',
+                industry: '',
+                message: '',
+                from: 'Voxa'
+            });
+            /* alert('Thank you for your message! I will get back to you soon.'); */
+            toast.success('Thank you for your message! I will get back to you soon.', {
+                duration: 3000,
+                position: 'top-right',
+                style: {
+                    background: '#10B981',
+                    color: '#fff',
+                    borderRadius: '8px',
+                },
+            });
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            setSubmitStatus({ loading: false, success: false, error: 'Failed to submit form. Please try again later.' });
+            /* alert('Sorry there was an error submitting your message. Please try again later.'); */
+            toast.success('Sorry there was an error submitting your message. Please try again later.', {
+                duration: 3000,
+                position: 'top-right',
+                style: {
+                    background: '#EF4444',
+                    color: '#fff',
+                    borderRadius: '8px',
+                },
+            });
+        }
+    };
+
     return (
         <div className="landing-page">
-            
+            <Toaster />
             
             {/* Hero Section */}
             <section
@@ -318,17 +399,17 @@ const LandingPage = () => {
                     </div>
 
                     {/* Right Side - Message Form */}
-                    <form className="contact-form">
+                    <form className="contact-form" onSubmit={handleSubmit}>
                         <h3 className="form-heading">Send us a message</h3>
                         <div className="form-row">
-                            <input type="text" placeholder="Name *" required />
-                            <input type="email" placeholder="Email *" required />
+                            <input type="text" name='name' placeholder="Name *" required value={formData.name} onChange={handleInputChange}/>
+                            <input type="email" name='email' placeholder="Email *" required value={formData.email} onChange={handleInputChange}/>
                         </div>
                         <div className="form-row">
-                            <input type="text" placeholder="Industry *" required />
+                            <input type="text" name='industry' placeholder="Industry *" required value={formData.industry} onChange={handleInputChange}/>
                         </div>
-                        <textarea placeholder="Message (optional)" rows="4"></textarea>
-                        <button type="submit" className="send-btn">Send</button>
+                        <textarea name='message' onChange={handleInputChange} placeholder="Message (optional)" rows="4" value={formData.message}></textarea>
+                        <button type="submit" className="send-btn" disabled={submitStatus.loading}>{submitStatus.loading? 'Sending...':'Send'}</button>
                     </form>
                 </div>
             </section>

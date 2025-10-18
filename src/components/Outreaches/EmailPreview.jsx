@@ -109,7 +109,7 @@ const EmailPreview = ({ lead }) => {
 
       if (insertError) throw insertError;
 
-      setStatus(`✅ ${stepLabels[nextStep]} logged and email sent!`);
+      setStatus(`✅ ${stepLabels[nextStep]} sent and logged!`);
     } catch (err) {
       console.error(err);
       setStatus("❌ Error: " + err.message);
