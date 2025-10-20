@@ -77,7 +77,7 @@ const EmailPreview = ({ lead }) => {
         user_id: userId,
         to: lead.email,
         icebreaker: lead.icebreaker || "",
-        name: lead.name,
+        name: lead.first_name,
         subject: subjectLine || "No subject",
         body: bodyContent || "No body content",
       };
@@ -128,7 +128,7 @@ const EmailPreview = ({ lead }) => {
       </div>
 
       <div className="email-body">
-        <h5> Hi {lead.name},</h5>
+        <h5> Hi {lead.first_name},</h5>
         {bodyContent ? (
           <>
             <p>{lead.icebreaker}</p>
