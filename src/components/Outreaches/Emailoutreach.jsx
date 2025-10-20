@@ -142,7 +142,7 @@ const EmailOutreach = () => {
                       <td>{lead.title || "—"}</td>
                       <td>{lead.organization_name || "—"}</td>
                       <td>{lead.industry || "—"}</td>
-                      <td>{getStepLabel(lead.current_step ?? 0)}</td>
+                      <td>{getStepLabel(lead.current_step)}</td>
                       <td>
                         <button
                           className="connect-btn"

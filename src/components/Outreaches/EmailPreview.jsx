@@ -44,31 +44,29 @@ const EmailPreview = ({ lead }) => {
       // 1️⃣ Fetch existing logs for this lead + campaign
       const { data: logs, error: logsError } = await supabase
         .from("outreach_logs")
-        .select("step_number")
+        .select("*")
         .eq("lead_id", lead.id)
         .eq("campaign_id", activeCampaignId)
-        .eq("user_id", userId);
+        .eq("user_id", userId)
+        .single();
 
-      if (logsError) throw logsError;
+      if (logsError && logsError.code !== 'PGRST116') { // PGRST116 is "not found" error
+        throw logsError;
+      }
 
-      const sentSteps = logs.map((l) => l.step_number);
-
-      const nextStep = (lead.current_step ?? 0) + 1;
+      const currentStep = logs?.step_number || 0;
+      const nextStep = currentStep + 1;
 
       // 2️⃣ Rule checks with labels
-      if (sentSteps.includes(nextStep)) {
-        setStatus(
-          `⚠️ This step (${stepLabels[nextStep]}) has already been sent to this lead.`
-        );
+      if (nextStep > 4) {
+        setStatus("⚠️ All steps have been completed for this lead.");
         return;
       }
 
-      if (nextStep > 1 && !sentSteps.includes(nextStep - 1)) {
-        setStatus(
-          `⚠️ You must complete the previous step first: ${stepLabels[nextStep - 1]}.`
-        );
+      /* if (logs.some(log => log.step_number === nextStep)) {
+        setStatus(`⚠️ ${stepLabels[nextStep]} has already been sent to this lead.`);
         return;
-      }
+      } */
 
       setStatus("📤 Sending...");
 
@@ -80,6 +78,7 @@ const EmailPreview = ({ lead }) => {
         name: lead.first_name,
         subject: subjectLine || "No subject",
         body: bodyContent || "No body content",
+        step: nextStep,
       };
 
       const apiUrl = import.meta.env.MODE === 'development' 
@@ -96,20 +95,30 @@ const EmailPreview = ({ lead }) => {
       if (!res.ok) throw new Error("Failed to send email");
 
       // 4️⃣ Log to outreach_logs ONLY if success
-      const { error: insertError } = await supabase
-        .from("outreach_logs")
-        .insert([
-          {
+      if (logs){
+        const { error: updateError } = await supabase
+          .from("outreach_logs")
+          .update(
+            {
+              step_number: nextStep,
+              sent_at: new Date().toISOString(),
+            })
+          .eq("id", logs.id);
+        if (updateError) throw updateError;
+      } else {
+        const { error: insertError } = await supabase
+          .from("outreach_logs")
+          .insert([{
             user_id: userId,
             lead_id: lead.id,
             campaign_id: activeCampaignId,
             step_number: nextStep,
-          },
-        ]);
+            sent_at: new Date().toISOString(),
+          }]);
+        if (insertError) throw insertError;
+      }
 
-      if (insertError) throw insertError;
-
-      setStatus(`✅ ${stepLabels[nextStep]} sent and logged!`);
+      setStatus(`✅ ${stepLabels[nextStep]} Sent!`);
     } catch (err) {
       console.error(err);
       setStatus("❌ Error: " + err.message);
@@ -142,7 +151,7 @@ const EmailPreview = ({ lead }) => {
 
       <div className="email-footer">
         <button
-          className={`send-btn ${!activeCampaignId ? "disabled" : ""}`}
+          className={`email-send-btn ${!activeCampaignId ? "disabled" : ""}`}
           onClick={handleSubmit}
           disabled={!activeCampaignId}
         >
