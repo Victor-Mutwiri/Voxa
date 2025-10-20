@@ -47,26 +47,27 @@ const EmailPreview = ({ lead }) => {
         .select("*")
         .eq("lead_id", lead.id)
         .eq("campaign_id", activeCampaignId)
-        .eq("user_id", userId)
-        .single();
+        .order('sent_at', { ascending: false });
 
-      if (logsError && logsError.code !== 'PGRST116') { // PGRST116 is "not found" error
-        throw logsError;
+      if (logsError) throw logsError;
+
+      // 2️⃣ Determine the current step for this campaign
+      let currentStep = 0;
+      let existingLogId = null;
+
+      if (logs && logs.length > 0) {
+        // Get the latest log for this campaign
+        const latestLog = logs[0];
+        currentStep = latestLog.step_number;
+        existingLogId = latestLog.id;
       }
 
-      const currentStep = logs?.step_number || 0;
       const nextStep = currentStep + 1;
 
-      // 2️⃣ Rule checks with labels
       if (nextStep > 4) {
         setStatus("⚠️ All steps have been completed for this lead.");
         return;
       }
-
-      /* if (logs.some(log => log.step_number === nextStep)) {
-        setStatus(`⚠️ ${stepLabels[nextStep]} has already been sent to this lead.`);
-        return;
-      } */
 
       setStatus("📤 Sending...");
 
@@ -95,7 +96,7 @@ const EmailPreview = ({ lead }) => {
       if (!res.ok) throw new Error("Failed to send email");
 
       // 4️⃣ Log to outreach_logs ONLY if success
-      if (logs){
+      if (existingLogId){
         const { error: updateError } = await supabase
           .from("outreach_logs")
           .update(
@@ -103,7 +104,7 @@ const EmailPreview = ({ lead }) => {
               step_number: nextStep,
               sent_at: new Date().toISOString(),
             })
-          .eq("id", logs.id);
+          .eq("id", existingLogId);
         if (updateError) throw updateError;
       } else {
         const { error: insertError } = await supabase
@@ -115,9 +116,11 @@ const EmailPreview = ({ lead }) => {
             step_number: nextStep,
             sent_at: new Date().toISOString(),
           }]);
+
         if (insertError) throw insertError;
       }
 
+      await useStore.getState().fetchLeads();
       setStatus(`✅ ${stepLabels[nextStep]} Sent!`);
     } catch (err) {
       console.error(err);
