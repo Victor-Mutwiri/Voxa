@@ -41,65 +41,119 @@ const EmailPreview = ({ lead }) => {
       setStatus("⏳ Checking outreach history...");
 
       try {
-        // 1️⃣ Fetch existing logs for this lead + campaign
-        const { data: logs, error: logsError } = await supabase
+        // 1️⃣ Fetch all logs for this lead + campaign
+        const { data: allLogs, error: logsError } = await supabase
           .from("outreach_logs")
           .select("*")
           .eq("lead_id", lead.id)
           .eq("campaign_id", activeCampaignId)
-          .order('sent_at', { ascending: false });
+          .order('sent_at', { ascending: true });
 
         if (logsError) throw logsError;
 
         // 2️⃣ Determine the next step
-        const currentStep = logs?.length > 0 ? logs[0].step_number : 0;
-        const nextStep = currentStep + 1;
+        const campaignLogs = allLogs.filter(log => log.campaign_id === activeCampaignId);
 
-        if (nextStep > 4) {
-          setStatus("⚠️ All steps have been completed for this lead.");
-          return;
-        }
+        if (campaignLogs.length > 0) {
+          // Get the latest step for this campaign
+          const latestLog = campaignLogs[campaignLogs.length - 1];
+          const currentStep = latestLog.step_number;
+          const nextStep = currentStep + 1;
 
-        setStatus("📤 Sending...");
+          if (nextStep > 4) {
+            setStatus("⚠️ All steps have been completed for this lead in this campaign.");
+            return;
+          }
 
-        // 3️⃣ Send email via webhook
-        const formData = {
-          user_id: userId,
-          to: lead.email,
-          icebreaker: lead.icebreaker || "",
-          name: lead.first_name,
-          subject: subjectLine || "No subject",
-          body: bodyContent || "No body content",
-          step: nextStep
-        };
+          // Validate step sequence
+          if (nextStep !== currentStep + 1) {
+            setStatus(`❌ Invalid step sequence. Expected step ${currentStep + 1}`);
+            return;
+          }
+          
+          setStatus(`📤 Sending ${stepLabels[nextStep]}...`);
 
-        const apiUrl = import.meta.env.MODE === 'development' 
-          ? import.meta.env.VITE_DEV_SENDEMAIL_URL 
-          : import.meta.env.VITE_PROD_SENDEMAIL_URL;
-
-        const res = await fetch(apiUrl, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
-        });
-
-        if (!res.ok) throw new Error("Failed to send email");
-
-        // 4️⃣ Always insert a new log entry
-        const { error: insertError } = await supabase
-          .from("outreach_logs")
-          .insert([{
+          // 3️⃣ Send email via webhook
+          const formData = {
             user_id: userId,
-            lead_id: lead.id,
-            campaign_id: activeCampaignId,
-            step_number: nextStep,
-            sent_at: new Date().toISOString(),
-          }]);
+            to: lead.email,
+            icebreaker: lead.icebreaker || "",
+            name: lead.first_name,
+            subject: subjectLine || "No subject",
+            body: bodyContent || "No body content",
+            step: nextStep
+          };
+
+          const apiUrl = import.meta.env.MODE === 'development' 
+            ? import.meta.env.VITE_DEV_SENDEMAIL_URL 
+            : import.meta.env.VITE_PROD_SENDEMAIL_URL;
+
+          const res = await fetch(apiUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(formData),
+          });
+
+          if (!res.ok) throw new Error("Failed to send email");
+
+          // 4️⃣ Always insert a new log entry
+          const { error: insertError } = await supabase
+            .from("outreach_logs")
+            .insert([{
+              user_id: userId,
+              lead_id: lead.id,
+              campaign_id: activeCampaignId,
+              step_number: nextStep,
+              sent_at: new Date().toISOString(),
+            }]);
 
         if (insertError) throw insertError;
 
         await useStore.getState().fetchLeads();
         setStatus(`✅ ${stepLabels[nextStep]} Sent!`);
+        }
+        else {
+          // No previous logs for this campaign, start with step 1
+          const formData = {
+            user_id: userId,
+            to: lead.email,
+            icebreaker: lead.icebreaker || "",
+            name: lead.first_name,
+            subject: subjectLine || "No subject",
+            body: bodyContent || "No body content",
+            step: 1
+          };
+
+          // Send first email and log it
+          const apiUrl = import.meta.env.MODE === 'development' 
+            ? import.meta.env.VITE_DEV_SENDEMAIL_URL 
+            : import.meta.env.VITE_PROD_SENDEMAIL_URL;
+
+          const res = await fetch(apiUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(formData),
+          });
+
+          if (!res.ok) throw new Error("Failed to send email");
+
+          const { error: insertError } = await supabase
+            .from("outreach_logs")
+            .insert([{
+              user_id: userId,
+              lead_id: lead.id,
+              campaign_id: activeCampaignId,
+              step_number: 1,
+              sent_at: new Date().toISOString(),
+              email_subject: subjectLine,
+              email_body: bodyContent
+            }]);
+
+          if (insertError) throw insertError;
+
+          await useStore.getState().fetchLeads();
+          setStatus(`✅ ${stepLabels[1]} Sent!`);
+        }
       } catch (err) {
         console.error(err);
         setStatus("❌ Error: " + err.message);
