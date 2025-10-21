@@ -145,8 +145,6 @@ const EmailPreview = ({ lead }) => {
               campaign_id: activeCampaignId,
               step_number: 1,
               sent_at: new Date().toISOString(),
-              email_subject: subjectLine,
-              email_body: bodyContent
             }]);
 
           if (insertError) throw insertError;
