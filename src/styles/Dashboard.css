@@ -12,6 +12,44 @@
   color: #1e293b;
 }
 
+
+.filter-section {
+  margin-bottom: 2rem;
+  /* padding: 1rem; */
+  /* background: white; */
+  border-radius: 8px;
+  /* box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); */
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.filter-group label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.campaign-select {
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+  background: white;
+  min-width: 200px;
+  font-size: 0.9rem;
+}
+
+.campaign-select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  ring: 2px solid rgba(59, 130, 246, 0.5);
+}
+
 .metrics-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
@@ -76,6 +114,45 @@
 }
 
 /* Funnel */
+.funnel-step {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+.step-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.step-progress {
+  height: 8px;
+  background: #e5e7eb;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background: #3b82f6;
+  transition: width 0.3s ease;
+}
+
+.step-label {
+  font-weight: 500;
+}
+
+.step-count {
+  color: #6b7280;
+}
+
+.activity-time {
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin-left: 0.5rem;
+}
+
 .funnel ul {
   list-style: none;
   padding: 0;

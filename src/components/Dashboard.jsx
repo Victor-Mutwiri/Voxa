@@ -10,6 +10,7 @@ import {
   Activity,
   TrendingUp,
   Clock,
+  Filter,
 } from "lucide-react";
 
 const stepLabels = {
@@ -24,47 +25,117 @@ const Dashboard = () => {
   const { userId, leads, campaigns, fetchLeads, fetchCampaigns } = useStore();
   const [outreachLogs, setOutreachLogs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedCampaign, setSelectedCampaign] = useState('all');
 
   // Fetch outreach logs
   useEffect(() => {
     const fetchLogs = async () => {
       if (!userId) return;
       setLoading(true);
-      const { data, error } = await supabase
+      
+      const query = supabase
         .from("outreach_logs")
         .select("*")
-        .eq("user_id", userId)
-        .order("created_at", { ascending: false });
+        .eq("user_id", userId);
+
+      // Add campaign filter if specific campaign selected
+      if (selectedCampaign !== 'all') {
+        query.eq("campaign_id", selectedCampaign);
+      }
+
+      const { data, error } = await query.order("sent_at", { ascending: false });
       if (!error) setOutreachLogs(data || []);
       setLoading(false);
     };
+
     fetchLogs();
     fetchLeads();
     fetchCampaigns();
-  }, [userId, fetchLeads, fetchCampaigns]);
+  }, [userId, fetchLeads, fetchCampaigns, selectedCampaign]);
 
   // Stats
-  const totalLeads = leads.length;
-  const totalCampaigns = campaigns.length;
-  const totalEmailsSent = outreachLogs.length;
+  const calculateStats = () => {
+    const stats = {
+      totalLeads: leads.length,
+      totalCampaigns: campaigns.length,
+      stepCounts: {
+        0: 0,
+        1: 0,
+        2: 0,
+        3: 0,
+        4: 0
+      },
+      emailsSent: 0
+    };
 
-  // Leads by step
-  const leadsByStep = leads.reduce((acc, lead) => {
-    acc[lead.current_step] = (acc[lead.current_step] || 0) + 1;
-    return acc;
-  }, {});
+    // Get all outreach logs for the user
+    const getAllEmailsSent = () => {
+      return leads.reduce((total, lead) => {
+        return total + (lead.outreach_logs?.length || 0);
+      }, 0);
+    };
+
+    // Get emails sent for specific campaign
+    const getCampaignEmailsSent = () => {
+      return outreachLogs.length;
+    };
+
+    // Initialize step 0 count with total leads not in the current campaign
+    const leadsInCurrentCampaign = new Set(outreachLogs.map(log => log.lead_id));
+    
+    if (selectedCampaign !== 'all') {
+      // For specific campaign
+      stats.stepCounts[0] = leads.filter(lead => !leadsInCurrentCampaign.has(lead.id)).length;
+      stats.emailsSent = getCampaignEmailsSent();
+    } else {
+      // For all campaigns
+      stats.stepCounts[0] = leads.filter(lead => !lead.outreach_logs?.length).length;
+      stats.emailsSent = getAllEmailsSent();
+    }
+
+    // Count emails by step for the filtered campaign(s)
+    outreachLogs.forEach(log => {
+      stats.stepCounts[log.step_number] = (stats.stepCounts[log.step_number] || 0) + 1;
+    });
+
+    return stats;
+  };
+
+  const stats = calculateStats();
 
   return (
     <div className="dashboard">
       {/* <h1 className="dashboard-title">📊 Outreach Dashboard</h1> */}
       {loading && <p>⏳ Loading insights...</p>}
 
+      {/* Campaign Filter */}
+      <div className="filter-section">
+        <div className="filter-group">
+          <label htmlFor="campaign-filter">
+            <Filter size={16} /> Filter by Campaign
+          </label>
+          <select
+            id="campaign-filter"
+            value={selectedCampaign}
+            onChange={(e) => setSelectedCampaign(e.target.value)}
+            className="campaign-select"
+          >
+            <option value="all">All Campaigns</option>
+            {campaigns.map((campaign) => (
+              <option key={campaign.id} value={campaign.id}>
+                {campaign.name}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
       {/* Metrics Grid */}
       <div className="metrics-grid">
         <div className="metric-card leads">
           <Users size={28} />
           <div>
-            <h3>{totalLeads}</h3>
+            <h3>{stats.totalLeads}</h3>
             <p>Total Leads</p>
           </div>
         </div>
@@ -72,7 +143,7 @@ const Dashboard = () => {
         <div className="metric-card campaigns">
           <Layers size={28} />
           <div>
-            <h3>{totalCampaigns}</h3>
+            <h3>{stats.totalCampaigns}</h3>
             <p>Campaigns</p>
           </div>
         </div>
@@ -80,7 +151,7 @@ const Dashboard = () => {
         <div className="metric-card emails">
           <Mail size={28} />
           <div>
-            <h3>{totalEmailsSent}</h3>
+            <h3>{stats.emailsSent}</h3>
             <p>Emails Sent</p>
           </div>
         </div>
@@ -89,13 +160,26 @@ const Dashboard = () => {
       {/* Funnel */}
       <div className="funnel card">
         <h2>
-          <TrendingUp size={20} /> Lead Funnel
+          <TrendingUp size={20} /> 
+          {selectedCampaign !== 'all' 
+            ? `${campaigns.find(c => c.id === selectedCampaign)?.name} Funnel` 
+            : 'Overall Lead Funnel'}
         </h2>
         <ul>
-          {Object.entries(stepLabels).map(([num, label]) => (
-            <li key={num}>
-              <span>{label}</span>
-              <span className="count">{leadsByStep[num] || 0}</span>
+          {Object.entries(stepLabels).map(([step, label]) => (
+            <li key={step} className="funnel-step">
+              <div className="step-info">
+                <span className="step-label">{label}</span>
+                <span className="step-count">{stats.stepCounts[step] || 0}</span>
+              </div>
+              <div className="step-progress">
+                <div 
+                  className="progress-bar"
+                  style={{
+                    width: `${stats.totalLeads ? (stats.stepCounts[step] / stats.totalLeads) * 100 : 0}%`
+                  }}
+                />
+              </div>
             </li>
           ))}
         </ul>
@@ -111,13 +195,18 @@ const Dashboard = () => {
             <Clock size={14} className="clock" />
             <span>
               Lead <strong>#{log.lead_id}</strong> →{" "}
-              {stepLabels[log.step_number]} (
-              <span className="campaign-tag">Campaign {log.campaign_id}</span>)
+              <span className="step-label">{stepLabels[log.step_number]}</span>
+              <span className="campaign-tag">
+                {campaigns.find(c => c.id === log.campaign_id)?.name || 'Unknown Campaign'}
+              </span>
+              <span className="activity-time">
+                {new Date(log.sent_at).toLocaleString()}
+              </span>
             </span>
           </div>
         ))}
         {outreachLogs.length === 0 && (
-          <p className="empty-state">No outreach activity yet 🚀</p>
+          <p className="empty-state">No outreach activity {selectedCampaign !== 'all' ? 'for this campaign' : ''} yet 🚀</p>
         )}
       </div>
     </div>

@@ -118,7 +118,8 @@ const useStore = create(
               *,
               outreach_logs!left (
                 step_number,
-                campaign_id
+                campaign_id,
+                sent_at
               )
             `
             )
@@ -127,22 +128,25 @@ const useStore = create(
           if (error) throw error;
 
           const processedLeads = data.map((lead) => {
-            const logs = lead.outreach_logs || [];
-            let current_step = 0;
-            let current_campaign_id = null;
-
-            if (logs.length > 0) {
-              const latestLog = logs.reduce((a, b) =>
-                a.step_number > b.step_number ? a : b
-              );
-              current_step = latestLog.step_number;
-              current_campaign_id = latestLog.campaign_id;
+          const logs = lead.outreach_logs || [];
+          
+          // Get the latest log entry for each campaign
+          const campaignSteps = logs.reduce((acc, log) => {
+            if (!acc[log.campaign_id] || 
+                new Date(log.sent_at) > new Date(acc[log.campaign_id].sent_at)) {
+              acc[log.campaign_id] = log;
             }
+            return acc;
+          }, {});
+
+          // Get all steps for this lead
+          const allSteps = logs.map(log => log.step_number).sort();
 
             return {
               ...lead,
-              current_step,
-              current_campaign_id,
+              campaign_steps: campaignSteps,
+              all_steps: allSteps,
+              current_step: allSteps[allSteps.length - 1] || 0
             };
           });
 
