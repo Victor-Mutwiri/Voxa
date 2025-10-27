@@ -41,9 +41,9 @@ const EmailOutreach = () => {
   // ✅ Apply filtering
   let displayedLeads = leads;
 
-  if (filters.campaignId) {
+  if (filters.industry) {
     displayedLeads = displayedLeads.filter(
-      (l) => String(l.current_campaign_id) === String(filters.campaignId)
+      (l) => l.industry?.toLowerCase() === filters.industry.toLowerCase()
     );
   }
 
@@ -52,6 +52,9 @@ const EmailOutreach = () => {
       (l) => String(l.current_step) === String(filters.stepNumber)
     );
   }
+
+  // Replace the campaign filter UI with industry filter
+const industries = [...new Set(leads.filter(l => l.industry).map(l => l.industry))].sort();
 
   // Only show leads with name + email
   const validLeads = displayedLeads.filter(
@@ -77,17 +80,17 @@ const EmailOutreach = () => {
           {/* ✅ Filters UI */}
           <div className="filters">
             <div className="filter-group">
-              <label>Campaign</label>
+              <label>Industry</label>
               <select
-                value={filters.campaignId || ""}
+                value={filters.industry || ""}
                 onChange={(e) =>
-                  setFilter("campaignId", e.target.value || null)
+                  setFilter("industry", e.target.value || null)
                 }
               >
-                <option value="">All Leads</option>
-                {campaigns.map((c) => (
-                  <option key={c.id} value={c.id}>
-                    {c.name}
+                <option value="">All Industries</option>
+                {industries.map((industry) => (
+                  <option key={industry} value={industry}>
+                    {industry}
                   </option>
                 ))}
               </select>
