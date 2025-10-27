@@ -71,15 +71,38 @@ const EmailBodies = () => {
       {showDeleteModal && (
         <div className="modal-overlay">
           <div className="modal">
-            <h3>Confirm Delete</h3>
-            <p>Are you sure you want to delete this template?</p>
+            <h3 style={{ color: '#ef4444', marginBottom: '16px' }}>Confirm Delete</h3>
+            <p style={{ marginBottom: '16px', color: '#fff' }}>Are you sure you want to delete this template?</p>
             <div className="modal-actions">
-              <button onClick={confirmDelete} className="button-danger">
+              <button style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  minWidth: '60px',
+                  padding: '8px 12px',
+                  backgroundColor: '#ef4444',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: '4px',
+                  cursor: 'pointer',
+                }} onClick={confirmDelete} className="button-danger">
                 Yes, Delete
               </button>
               <button
                 onClick={() => setShowDeleteModal(false)}
                 className="button-secondary"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  minWidth: '60px',
+                  padding: '8px 12px',
+                  backgroundColor: '#6b7280',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: '4px',
+                  cursor: 'pointer',
+                }}
               >
                 Cancel
               </button>
