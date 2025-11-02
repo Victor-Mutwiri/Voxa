@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Mail, Linkedin } from "lucide-react";
+import { Mail, Linkedin, Phone } from "lucide-react";
 import EmailOutreach from "./Outreaches/Emailoutreach";
+import PhoneOutreach from "./Outreaches/Phoneoutreach";
 import LinkedinOutreach from "./Outreaches/Linkedinoutreach";
 import '../styles/Outreach.css';
 
@@ -11,6 +12,13 @@ const Outreach = () => {
     <section className="outreach">
       {/* Tab Navigation */}
       <div className="outreach-tabs">
+        <button
+          className={`tab-btn ${activeTab === "phone" ? "active" : ""}`}
+          onClick={() => setActiveTab("phone")}
+        >
+          <Phone size={18} />
+          <span>Phone</span>
+        </button>
         <button
           className={`tab-btn ${activeTab === "email" ? "active" : ""}`}
           onClick={() => setActiveTab("email")}
@@ -29,6 +37,7 @@ const Outreach = () => {
 
       {/* Content Area */}
       <div className="outreach-content">
+        {activeTab === "phone" && <PhoneOutreach />}
         {activeTab === "email" && <EmailOutreach />}
         {activeTab === "linkedin" && <LinkedinOutreach />}
       </div>
